@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>60-Day FAANG Prep — Battle Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c10;
+  --bg2: #0f1218;
+  --bg3: #161b24;
+  --bg4: #1d2433;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.12);
+  --text: #e8eaf0;
+  --muted: #6b7280;
+  --muted2: #4b5563;
+  --cyan: #00d4ff;
+  --cyan-dim: rgba(0,212,255,0.12);
+  --cyan-dim2: rgba(0,212,255,0.06);
+  --green: #10b981;
+  --green-dim: rgba(16,185,129,0.12);
+  --orange: #f59e0b;
+  --orange-dim: rgba(245,158,11,0.12);
+  --red: #ef4444;
+  --red-dim: rgba(239,68,68,0.12);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167,139,250,0.12);
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Syne', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-display);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* GRID BACKGROUND */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+
+/* HEADER */
+.header {
+  padding: 32px 0 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+
+.header-inner { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+
+.header-left {}
+
+.logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 12px var(--cyan); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.logo-label { font-family: var(--font-mono); font-size: 11px; color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; }
+
+h1 { font-size: clamp(26px, 4vw, 42px); font-weight: 800; color: #fff; line-height: 1.1; letter-spacing: -1px; }
+h1 span { color: var(--cyan); }
+
+.header-sub { margin-top: 8px; font-size: 13px; color: var(--muted); font-family: var(--font-mono); }
+
+/* STATS ROW */
+.stats-row { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.stat-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 20px;
+  min-width: 120px;
+  transition: border-color 0.2s;
+}
+.stat-card:hover { border-color: var(--border2); }
+
+.stat-val { font-family: var(--font-mono); font-size: 24px; font-weight: 700; color: #fff; }
+.stat-val.cyan { color: var(--cyan); }
+.stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; letter-spacing: 0.5px; text-transform: uppercase; }
+
+/* PROGRESS BAR */
+.progress-wrap { margin-bottom: 28px; }
+.progress-bar-outer { height: 3px; background: var(--bg3); border-radius: 2px; }
+.progress-bar-inner { height: 100%; background: linear-gradient(90deg, var(--cyan), var(--purple)); border-radius: 2px; transition: width 0.5s ease; box-shadow: 0 0 8px var(--cyan); }
+.progress-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+
+/* LEGEND */
+.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; padding: 12px 16px; background: var(--bg3); border-radius: 10px; border: 1px solid var(--border); }
+.legend-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* WEEK TABS */
+.week-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
+
+.wtab {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  background: var(--bg3);
+  color: var(--muted);
+  transition: all 0.15s;
+  letter-spacing: 0.5px;
+}
+.wtab:hover { border-color: var(--border2); color: var(--text); }
+.wtab.active { background: var(--cyan-dim); border-color: var(--cyan); color: var(--cyan); }
+
+/* WEEK THEME */
+.week-theme {
+  margin-bottom: 20px;
+  padding: 10px 16px;
+  background: var(--bg3);
+  border-radius: 8px;
+  border-left: 3px solid var(--cyan);
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+.week-theme strong { color: var(--cyan); }
+
+/* DAYS GRID */
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+/* DAY CARD */
+.day-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.1s;
+}
+.day-card:hover { border-color: var(--border2); }
+.day-card.weekend { border-color: rgba(167,139,250,0.2); }
+.day-card.weekend:hover { border-color: rgba(167,139,250,0.4); }
+.day-card.completed-card { border-color: rgba(16,185,129,0.3); }
+
+.day-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: var(--bg3);
+  user-select: none;
+  transition: background 0.15s;
+}
+.day-header:hover { background: var(--bg4); }
+
+.day-num-row { display: flex; align-items: center; gap: 10px; }
+.day-num { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+.day-title { font-size: 14px; font-weight: 600; color: var(--text); }
+
+.day-meta { display: flex; align-items: center; gap: 8px; }
+.weekend-pill { font-size: 10px; padding: 2px 8px; border-radius: 20px; background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); font-family: var(--font-mono); }
+.day-progress-mini { font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+.chevron { font-size: 10px; color: var(--muted2); transition: transform 0.2s; }
+.chevron.open { transform: rotate(180deg); }
+
+/* DAY BODY */
+.day-body { display: none; }
+.day-body.open { display: block; }
+
+/* AGENT SECTION */
+.agent-section { border-top: 1px solid var(--border); padding: 14px 16px; }
+
+.agent-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.agent-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.agent-label { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-family: var(--font-mono); }
+
+.section-sublabel { font-size: 10px; color: var(--muted2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; margin-top: 4px; font-family: var(--font-mono); }
+
+/* ITEM ROW */
+.item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.item-row input[type=checkbox] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--cyan);
+  cursor: pointer;
+  width: 13px;
+  height: 13px;
+}
+
+.item-link {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.15s;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+}
+.item-link:hover { color: var(--cyan); }
+
+.tag-pill {
+  font-size: 9px;
+  padding: 2px 7px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+.pill-concept { background: var(--green-dim); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+.pill-problem { background: var(--orange-dim); color: var(--orange); border: 1px solid rgba(245,158,11,0.2); }
+.pill-both { background: var(--purple-dim); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+
+.plat-lc { font-size: 9px; padding: 1px 5px; border-radius: 4px; background: rgba(254,160,0,0.12); color: #feab00; font-family: var(--font-mono); font-weight: 600; flex-shrink: 0; }
+.plat-gfg { font-size: 9px; padding: 1px 5px; border-radius: 4px; background: rgba(30,215,96,0.12); color: #1ed760; font-family: var(--font-mono); font-weight: 600; flex-shrink: 0; }
+
+.diff-e { font-size: 10px; color: var(--green); font-family: var(--font-mono); flex-shrink: 0; }
+.diff-m { font-size: 10px; color: var(--orange); font-family: var(--font-mono); flex-shrink: 0; }
+.diff-h { font-size: 10px; color: var(--red); font-family: var(--font-mono); flex-shrink: 0; }
+
+/* CS BOX */
+.cs-box {
+  background: var(--bg3);
+  border-radius: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+}
+.cs-subject { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.cs-subject a { color: var(--text); text-decoration: none; transition: color 0.15s; }
+.cs-subject a:hover { color: var(--green); }
+.cs-pts { font-size: 11px; color: var(--muted); font-family: var(--font-mono); line-height: 1.6; }
+
+/* CHECKED ITEM STYLE */
+.item-row.done .item-link { color: var(--muted2); text-decoration: line-through; }
+.item-row.done .item-text { color: var(--muted2); text-decoration: line-through; }
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.filter-label { font-size: 12px; color: var(--muted); font-family: var(--font-mono); }
+.filter-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 11px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  background: var(--bg3);
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.filter-btn:hover { border-color: var(--border2); color: var(--text); }
+.filter-btn.active { background: var(--green-dim); border-color: var(--green); color: var(--green); }
+
+/* FOOTER */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0;
+  margin-top: 20px;
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: gap;
+}
+
+/* ITEM TEXT (non-link) */
+.item-text { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted2); }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--bg3);
+  border: 1px solid var(--green);
+  color: var(--green);
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.25s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 640px) {
+  .days-grid { grid-template-columns: 1fr; }
+  .header-inner { flex-direction: column; }
+  .stats-row { gap: 8px; }
+  .stat-card { min-width: 100px; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-left">
+        <div class="logo-row">
+          <div class="logo-dot"></div>
+          <span class="logo-label">FAANG Prep System · 60 Days</span>
+        </div>
+        <h1>Your <span>Battle Plan</span><br>for FAANG/MAANG</h1>
+        <div class="header-sub">DSA · LLD · OS · DBMS · CN &nbsp;|&nbsp; Striver A2Z + TUF+ + Love Babbar</div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-val cyan" id="stat-done">0</div>
+          <div class="stat-label">Done</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="stat-total">—</div>
+          <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val cyan" id="stat-pct">0%</div>
+          <div class="stat-label">Progress</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="stat-day">—</div>
+          <div class="stat-label">Today</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Overall Progress</span>
+      <span id="prog-label-r">0 / 0 tasks</span>
+    </div>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="main-progress" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#00d4ff"></div>DSA — Striver A2Z</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div>CS Core — OS/DBMS/CN</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div>LLD — TUF+</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#ef4444"></div>Daily LeetCode</div>
+    <div class="legend-item"><span class="tag-pill pill-concept" style="font-size:10px">📺 Concept</span>just watch</div>
+    <div class="legend-item"><span class="tag-pill pill-problem" style="font-size:10px">💻 Solve</span>watch → grind</div>
+    <div class="legend-item"><span class="tag-pill pill-both" style="font-size:10px">📺+💻 Both</span>watch → solve blind</div>
+    <div class="legend-item" style="margin-left:auto">
+      <button class="filter-btn" id="btn-reset-all" onclick="resetAll()" style="color:#ef4444;border-color:rgba(239,68,68,0.3)">Reset All</button>
+    </div>
+  </div>
+
+  <!-- WEEK TABS -->
+  <div class="week-tabs" id="week-tabs"></div>
+
+  <!-- WEEK THEME -->
+  <div class="week-theme" id="week-theme-box"></div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <span class="filter-label">show:</span>
+    <button class="filter-btn active" onclick="setFilter('all',this)">All</button>
+    <button class="filter-btn" onclick="setFilter('pending',this)">Pending only</button>
+    <button class="filter-btn" onclick="setFilter('done',this)">Completed only</button>
+  </div>
+
+  <!-- DAYS GRID -->
+  <div class="days-grid" id="days-grid"></div>
+
+  <div class="footer">
+    <span>60-Day FAANG Battle Plan · Built for you</span>
+    <span style="color:var(--muted2)">Progress saves automatically in browser · Last saved: <span id="last-saved">never</span></span>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const L=(n,u,p,d)=>({name:n,url:u,plat:p||"LC",diff:d||"M"});
+const C=(num,title,type)=>({num,title,type});
+
+const weekThemes=[
+  "Week 1: Arrays basics · OS Processes/Threads · SOLID Principles",
+  "Week 2: Arrays hard · Binary Search intro · DBMS SQL/Normalization · Creational Patterns",
+  "Week 3: Binary Search hard · Linked List · CN OSI/TCP · Structural Patterns",
+  "Week 4: LL Advanced · Trees basics · CN Security · Behavioral Patterns",
+  "Week 5: Trees Advanced · BST · OS Memory/Deadlocks · LLD Concurrency",
+  "Week 6: Graphs fundamentals · DBMS Indexing/Transactions · Machine Coding I",
+  "Week 7: Graphs Advanced · DP starts · CS Revision · Machine Coding II",
+  "Week 8: DP Hard · Stack/Queue · Full Mock Interviews · Final Revision",
+  "Final Sprint: Weak Areas · SQL Practice · Mock Interviews · You're ready.",
+];
+
+const days=[
+{day:1,week:1,dayName:"Mon",weekend:false,dsa:{watch:[C(17,"Arrays intro — 2nd largest, remove dups, check sorted","both")],solve:[L("Second Largest Element","https://www.geeksforgeeks.org/problems/second-largest3735/1","GFG","E"),L("Remove Duplicates from Sorted Array","https://leetcode.com/problems/remove-duplicates-from-sorted-array/","LC","E"),L("Rotate Array","https://leetcode.com/problems/rotate-array/","LC","M")]},cs:{sub:"OS",topic:"Processes, Threads & PCB",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Process vs Thread · PCB · Context Switch · Process States · fork()"},lld:{topic:"SRP — Single Responsibility Principle",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Two Sum","https://leetcode.com/problems/two-sum/","LC","E"),L("Contains Duplicate","https://leetcode.com/problems/contains-duplicate/","LC","E")]},
+
+{day:2,week:1,dayName:"Tue",weekend:false,dsa:{watch:[C(18,"Rotate array, union/intersection sorted arrays, move zeros","both"),C(19,"Find element once, missing number, max consecutive 1s","both")],solve:[L("Move Zeroes","https://leetcode.com/problems/move-zeroes/","LC","E"),L("Missing Number","https://leetcode.com/problems/missing-number/","LC","E"),L("Single Number","https://leetcode.com/problems/single-number/","LC","E"),L("Max Consecutive Ones","https://leetcode.com/problems/max-consecutive-ones/","LC","E")]},cs:{sub:"OS",topic:"CPU Scheduling Algorithms",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"FCFS · SJF · Round Robin · Priority · Preemptive vs Non-preemptive"},lld:{topic:"OCP — Open Closed Principle",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Best Time to Buy and Sell Stock","https://leetcode.com/problems/best-time-to-buy-and-sell-stock/","LC","E"),L("Majority Element","https://leetcode.com/problems/majority-element/","LC","E")]},
+
+{day:3,week:1,dayName:"Wed",weekend:false,dsa:{watch:[C(20,"Longest subarray with sum K — brute to optimal","both"),C(21,"2 Sum — 2 interview variants","both")],solve:[L("Subarray Sum Equals K","https://leetcode.com/problems/subarray-sum-equals-k/","LC","M"),L("Two Sum","https://leetcode.com/problems/two-sum/","LC","E"),L("Longest Subarray Sum K","https://www.geeksforgeeks.org/problems/longest-sub-array-with-sum-k0809/1","GFG","M")]},cs:{sub:"OS",topic:"Process Synchronization — Mutex, Semaphore, Monitor",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Race Condition · Critical Section · Mutex vs Semaphore · Monitor"},lld:{topic:"LSP, ISP, DIP — remaining SOLID",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Product of Array Except Self","https://leetcode.com/problems/product-of-array-except-self/","LC","M"),L("Maximum Subarray","https://leetcode.com/problems/maximum-subarray/","LC","M")]},
+
+{day:4,week:1,dayName:"Thu",weekend:false,dsa:{watch:[C(22,"Sort 0s 1s 2s — Dutch National Flag","both"),C(23,"Majority Element I — Moore's Voting","both"),C(24,"Kadane's Algorithm","both")],solve:[L("Sort Colors","https://leetcode.com/problems/sort-colors/","LC","M"),L("Majority Element","https://leetcode.com/problems/majority-element/","LC","E"),L("Maximum Subarray","https://leetcode.com/problems/maximum-subarray/","LC","M")]},cs:{sub:"OS",topic:"Deadlocks — detection, prevention, avoidance",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"4 Conditions for Deadlock · Banker's Algorithm · RAG · Prevention vs Avoidance"},lld:{topic:"UML Class Diagrams — notation & relationships",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Jump Game","https://leetcode.com/problems/jump-game/","LC","M"),L("Maximum Product Subarray","https://leetcode.com/problems/maximum-product-subarray/","LC","M")]},
+
+{day:5,week:1,dayName:"Fri",weekend:false,dsa:{watch:[C(25,"Best Time to Buy & Sell Stock","both"),C(26,"Rearrange array elements by sign","both"),C(27,"Next Permutation — intuition","both")],solve:[L("Best Time to Buy and Sell Stock","https://leetcode.com/problems/best-time-to-buy-and-sell-stock/","LC","E"),L("Rearrange Array by Sign","https://leetcode.com/problems/rearrange-array-elements-by-sign/","LC","M"),L("Next Permutation","https://leetcode.com/problems/next-permutation/","LC","M")]},cs:{sub:"OS",topic:"Memory Management — paging, segmentation",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Logical vs Physical · Paging · Segmentation · Internal/External Fragmentation"},lld:{topic:"Design Patterns intro + Singleton (thread-safe)",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Longest Consecutive Sequence","https://leetcode.com/problems/longest-consecutive-sequence/","LC","M"),L("Jump Game II","https://leetcode.com/problems/jump-game-ii/","LC","M")]},
+
+{day:6,week:1,dayName:"Sat",weekend:true,dsa:{watch:[C(28,"Leaders in array","both"),C(29,"Longest Consecutive Sequence","both"),C(30,"Set Matrix Zeroes O(1) space","both")],solve:[L("Longest Consecutive Sequence","https://leetcode.com/problems/longest-consecutive-sequence/","LC","M"),L("Set Matrix Zeroes","https://leetcode.com/problems/set-matrix-zeroes/","LC","M"),L("Pascal's Triangle","https://leetcode.com/problems/pascals-triangle/","LC","E"),L("Rotate Image","https://leetcode.com/problems/rotate-image/","LC","M"),L("Spiral Matrix","https://leetcode.com/problems/spiral-matrix/","LC","M")]},cs:{sub:"OS",topic:"Virtual Memory — TLB, page replacement",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Virtual Memory · TLB · LRU/FIFO/Optimal page replacement · Thrashing"},lld:{topic:"Factory Method Pattern",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("3Sum","https://leetcode.com/problems/3sum/","LC","M"),L("Container With Most Water","https://leetcode.com/problems/container-with-most-water/","LC","M"),L("Find Pivot Index","https://leetcode.com/problems/find-pivot-index/","LC","E")]},
+
+{day:7,week:1,dayName:"Sun",weekend:true,dsa:{watch:[C(31,"Rotate Matrix 90 degrees","both"),C(32,"Spiral Matrix traversal","both"),C(33,"Count subarray sum = K","both"),C(34,"Pascal Triangle","both"),C(35,"Majority Element II","both")],solve:[L("Majority Element II","https://leetcode.com/problems/majority-element-ii/","LC","M"),L("Spiral Matrix","https://leetcode.com/problems/spiral-matrix/","LC","M"),L("Rotate Image","https://leetcode.com/problems/rotate-image/","LC","M"),L("Subarray Sum Equals K","https://leetcode.com/problems/subarray-sum-equals-k/","LC","M")]},cs:{sub:"DBMS",topic:"DBMS intro, ER Model, Keys",url:"https://takeuforward.org/dbms",pts:"Entity · Attribute · Relationship · Primary/Candidate/Foreign Key · ER Diagram"},lld:{topic:"Builder Pattern + Abstract Factory",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Merge Intervals","https://leetcode.com/problems/merge-intervals/","LC","M"),L("Find All Duplicates","https://leetcode.com/problems/find-all-duplicates-in-an-array/","LC","M")]},
+
+{day:8,week:2,dayName:"Mon",weekend:false,dsa:{watch:[C(36,"3 Sum — brute to optimal","both"),C(37,"4 Sum — brute to optimal","both")],solve:[L("3Sum","https://leetcode.com/problems/3sum/","LC","M"),L("4Sum","https://leetcode.com/problems/4sum/","LC","M"),L("3Sum Closest","https://leetcode.com/problems/3sum-closest/","LC","M")]},cs:{sub:"DBMS",topic:"SQL — SELECT, WHERE, JOIN, GROUP BY, HAVING",url:"https://takeuforward.org/dbms",pts:"Inner/Left/Right/Full Join · GROUP BY · HAVING · COUNT, SUM, AVG, MAX, MIN"},lld:{topic:"Prototype Pattern",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Two Sum II — Sorted Array","https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/","LC","M"),L("Container With Most Water","https://leetcode.com/problems/container-with-most-water/","LC","M")]},
+
+{day:9,week:2,dayName:"Tue",weekend:false,dsa:{watch:[C(38,"Count subarrays with XOR K","both"),C(39,"Merge overlapping intervals","both"),C(40,"Merge sorted arrays no extra space","both")],solve:[L("Merge Intervals","https://leetcode.com/problems/merge-intervals/","LC","M"),L("Merge Sorted Array","https://leetcode.com/problems/merge-sorted-array/","LC","E"),L("Count Triplets XOR","https://leetcode.com/problems/count-triplets-that-can-form-two-arrays-of-equal-xor/","LC","M")]},cs:{sub:"DBMS",topic:"SQL Advanced — subqueries, views, window functions",url:"https://takeuforward.org/dbms",pts:"Subqueries · Views · CTEs · ROW_NUMBER · RANK · LEAD · LAG"},lld:{topic:"Adapter Pattern + Decorator Pattern",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Insert Interval","https://leetcode.com/problems/insert-interval/","LC","M"),L("Min Arrows to Burst Balloons","https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/","LC","M")]},
+
+{day:10,week:2,dayName:"Wed",weekend:false,dsa:{watch:[C(41,"Find missing and repeating — 4 approaches","both"),C(42,"Count inversions in array","both"),C(43,"Reverse Pairs — hard","both")],solve:[L("Reverse Pairs","https://leetcode.com/problems/reverse-pairs/","LC","H"),L("Find Missing Repeating","https://www.geeksforgeeks.org/problems/find-missing-and-repeating2512/1","GFG","M"),L("Count Inversions","https://www.geeksforgeeks.org/problems/inversion-of-array-1587115620/1","GFG","M")]},cs:{sub:"DBMS",topic:"Normalization — 1NF, 2NF, 3NF, BCNF",url:"https://takeuforward.org/dbms",pts:"1NF/2NF/3NF/BCNF · Functional Dependency · Armstrong's Axioms · Closure"},lld:{topic:"Facade + Composite + Proxy Patterns",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Maximum Product Subarray","https://leetcode.com/problems/maximum-product-subarray/","LC","M"),L("Longest Turbulent Subarray","https://leetcode.com/problems/longest-turbulent-subarray/","LC","M")]},
+
+{day:11,week:2,dayName:"Thu",weekend:false,dsa:{watch:[C(44,"Maximum Product Subarray","both"),C(45,"Binary Search Introduction — MUST WATCH","concept")],solve:[L("Binary Search","https://leetcode.com/problems/binary-search/","LC","E"),L("Search Insert Position","https://leetcode.com/problems/search-insert-position/","LC","E"),L("Guess Number Higher or Lower","https://leetcode.com/problems/guess-number-higher-or-lower/","LC","E")]},cs:{sub:"DBMS",topic:"Query Processing & Optimization",url:"https://takeuforward.org/dbms",pts:"Query Parsing · Logical Plan · Physical Plan · Cost-based Optimization · Indexes"},lld:{topic:"Bridge Pattern + Flyweight Pattern",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("First Bad Version","https://leetcode.com/problems/first-bad-version/","LC","E"),L("Valid Perfect Square","https://leetcode.com/problems/valid-perfect-square/","LC","E")]},
+
+{day:12,week:2,dayName:"Fri",weekend:false,dsa:{watch:[C(46,"Lower Bound, Upper Bound, Floor, Ceil","both"),C(47,"First and Last Occurrences in array","both")],solve:[L("Find First and Last Position","https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/","LC","M"),L("Floor in BST (Lower Bound)","https://www.geeksforgeeks.org/problems/floor-in-bst/1","GFG","M")]},cs:{sub:"CN",topic:"OSI Model — all 7 layers with protocols",url:"https://takeuforward.org/computer-networks",pts:"Physical · Data Link · Network · Transport · Session · Presentation · Application"},lld:{topic:"Observer Pattern",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Search in Rotated Sorted Array","https://leetcode.com/problems/search-in-rotated-sorted-array/","LC","M"),L("Find Minimum in Rotated Sorted Array","https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/","LC","M")]},
+
+{day:13,week:2,dayName:"Sat",weekend:true,dsa:{watch:[C(48,"Search in Rotated Array I","both"),C(49,"Search in Rotated Array II","both"),C(50,"Minimum in Rotated Array","both"),C(51,"How many times array rotated","both")],solve:[L("Search in Rotated Array I","https://leetcode.com/problems/search-in-rotated-sorted-array/","LC","M"),L("Search in Rotated Array II","https://leetcode.com/problems/search-in-rotated-sorted-array-ii/","LC","M"),L("Find Minimum Rotated","https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/","LC","M"),L("Single Element in Sorted Array","https://leetcode.com/problems/single-element-in-a-sorted-array/","LC","M"),L("Find Peak Element","https://leetcode.com/problems/find-peak-element/","LC","M")]},cs:{sub:"CN",topic:"TCP/IP Model + HTTP/HTTPS/DNS deep dive",url:"https://takeuforward.org/computer-networks",pts:"TCP vs UDP · 3-way handshake · HTTP 1/2/3 · HTTPS · DNS resolution · DHCP"},lld:{topic:"Strategy + Command + Template Method Patterns",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Koko Eating Bananas","https://leetcode.com/problems/koko-eating-bananas/","LC","M"),L("Min Days to Make Bouquets","https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/","LC","M"),L("Find Peak Element II","https://leetcode.com/problems/find-a-peak-element-ii/","LC","M")]},
+
+{day:14,week:2,dayName:"Sun",weekend:true,dsa:{watch:[C(52,"Single Element in Sorted Array","both"),C(53,"Find Peak Element","both"),C(54,"Sqrt via Binary Search","both"),C(55,"Nth Root via Binary Search","both"),C(56,"Koko Eating Bananas","both")],solve:[L("Sqrtx","https://leetcode.com/problems/sqrtx/","LC","E"),L("Koko Eating Bananas","https://leetcode.com/problems/koko-eating-bananas/","LC","M"),L("Min Days Bouquets","https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/","LC","M"),L("Find Smallest Divisor","https://leetcode.com/problems/find-the-smallest-divisor-given-a-threshold/","LC","M")]},cs:{sub:"CN",topic:"IP Addressing — IPv4, IPv6, Subnetting, NAT",url:"https://takeuforward.org/computer-networks",pts:"IPv4 classes · CIDR · Subnetting · NAT · IPv6 basics"},lld:{topic:"State + Chain of Responsibility + Iterator Patterns",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Capacity to Ship Packages","https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/","LC","M"),L("Kth Missing Positive Number","https://leetcode.com/problems/kth-missing-positive-number/","LC","E")]},
+
+{day:15,week:3,dayName:"Mon",weekend:false,dsa:{watch:[C(57,"Min days M bouquets","both"),C(58,"Smallest Divisor Threshold","both"),C(59,"Capacity to Ship D days","both")],solve:[L("Aggressive Cows","https://www.geeksforgeeks.org/problems/aggressive-cows/0","GFG","H"),L("Book Allocation","https://www.geeksforgeeks.org/problems/allocate-minimum-number-pages0937/1","GFG","H"),L("Split Array Largest Sum","https://leetcode.com/problems/split-array-largest-sum/","LC","H")]},cs:{sub:"CN",topic:"Routing — Distance Vector, Link State, BGP, OSPF",url:"https://takeuforward.org/computer-networks",pts:"DV vs LS · RIP (DV) · OSPF (LS) · BGP (Path vector) · Routing table"},lld:{topic:"Mediator + Memento + Visitor Patterns",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Minimize Max Distance Gas Stations","https://leetcode.com/problems/minimize-max-distance-to-gas-station/","LC","H"),L("Find K-th Smallest Pair Distance","https://leetcode.com/problems/find-k-th-smallest-pair-distance/","LC","H")]},
+
+{day:16,week:3,dayName:"Tue",weekend:false,dsa:{watch:[C(60,"Kth Missing Positive Number","both"),C(61,"Aggressive Cows — hard","both"),C(62,"Book Allocation — hard","both")],solve:[L("Search a 2D Matrix","https://leetcode.com/problems/search-a-2d-matrix/","LC","M"),L("Search a 2D Matrix II","https://leetcode.com/problems/search-a-2d-matrix-ii/","LC","M"),L("Median of Two Sorted Arrays","https://leetcode.com/problems/median-of-two-sorted-arrays/","LC","H")]},cs:{sub:"CN",topic:"Network Security — Firewall, VPN, TLS/SSL, Cryptography",url:"https://takeuforward.org/computer-networks",pts:"Symmetric vs Asymmetric · TLS handshake · PKI · Firewall types · VPN"},lld:{topic:"All patterns quick revision sheet",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Row with Max 1s","https://www.geeksforgeeks.org/problems/row-with-max-1s0023/1","GFG","M"),L("Matrix Median","https://www.geeksforgeeks.org/problems/median-in-a-row-wise-sorted-matrix1527/1","GFG","H")]},
+
+{day:17,week:3,dayName:"Wed",weekend:false,dsa:{watch:[C(63,"Painter's Partition + Split Array Largest Sum","both"),C(64,"Minimise Max Distance Gas Stations","both"),C(65,"Median Two Sorted — brute/better","both"),C(66,"Median Two Sorted — binary search","both")],solve:[L("Median of Two Sorted Arrays","https://leetcode.com/problems/median-of-two-sorted-arrays/","LC","H"),L("Search a 2D Matrix","https://leetcode.com/problems/search-a-2d-matrix/","LC","M")]},cs:{sub:"CN",topic:"Load Balancing, CDN, SDN, Network Virtualization",url:"https://takeuforward.org/computer-networks",pts:"Load Balancing algos · CDN benefits · Software-Defined Networking"},lld:{topic:"SOLID revision + LLD Interview approach",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Find Peak Element II","https://leetcode.com/problems/find-a-peak-element-ii/","LC","M"),L("Max Side Length Square with Sum ≤ K","https://leetcode.com/problems/maximum-side-length-of-a-square-with-sum-less-than-or-equal-to-threshold/","LC","M")]},
+
+{day:18,week:3,dayName:"Thu",weekend:false,dsa:{watch:[C(67,"K-th element two sorted arrays","both"),C(68,"Row with max 1s — 2D binary search","both"),C(69,"Search 2D Matrix I","both"),C(70,"Search 2D Matrix II","both")],solve:[L("Reverse Linked List","https://leetcode.com/problems/reverse-linked-list/","LC","E"),L("Middle of Linked List","https://leetcode.com/problems/middle-of-the-linked-list/","LC","E"),L("Remove Nth Node from End","https://leetcode.com/problems/remove-nth-node-from-end-of-list/","LC","M")]},cs:{sub:"OS",topic:"File Systems — Inode, directory, FAT vs ext4",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Inode structure · Hard vs Soft links · FAT · ext3/ext4 · File allocation methods"},lld:{topic:"Dependency Injection — theory + example",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Merge Two Sorted Lists","https://leetcode.com/problems/merge-two-sorted-lists/","LC","E"),L("Palindrome Linked List","https://leetcode.com/problems/palindrome-linked-list/","LC","E")]},
+
+{day:19,week:3,dayName:"Fri",weekend:false,dsa:{watch:[C(237,"Linked List Intro — traversal, length, search","concept"),C(238,"Deletion & Insertion in LL — 8 problems","both")],solve:[L("Add Two Numbers","https://leetcode.com/problems/add-two-numbers/","LC","M"),L("Odd Even Linked List","https://leetcode.com/problems/odd-even-linked-list/","LC","M"),L("Delete Node in LL","https://leetcode.com/problems/delete-node-in-a-linked-list/","LC","M")]},cs:{sub:"OS",topic:"I/O Systems + OS revision",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Polling vs Interrupt · DMA · Disk scheduling (SSTF, SCAN, C-SCAN)"},lld:{topic:"Exception Handling + Resilient System Design",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Linked List Cycle","https://leetcode.com/problems/linked-list-cycle/","LC","E"),L("Intersection of Two Linked Lists","https://leetcode.com/problems/intersection-of-two-linked-lists/","LC","E")]},
+
+{day:20,week:3,dayName:"Sat",weekend:true,dsa:{watch:[C(239,"Doubly Linked List — insertions & deletions","concept"),C(240,"Reverse a DLL","both"),C(241,"Add 2 numbers in LL","both"),C(242,"Odd Even Linked List","both"),C(243,"Sort LL of 0s 1s 2s","both")],solve:[L("Sort List","https://leetcode.com/problems/sort-list/","LC","M"),L("Remove Nth Node from End","https://leetcode.com/problems/remove-nth-node-from-end-of-list/","LC","M"),L("Swap Nodes in Pairs","https://leetcode.com/problems/swap-nodes-in-pairs/","LC","M"),L("Rotate List","https://leetcode.com/problems/rotate-list/","LC","M"),L("Copy List with Random Pointer","https://leetcode.com/problems/copy-list-with-random-pointer/","LC","M")]},cs:{sub:"DBMS",topic:"Transactions, ACID Properties, Isolation Levels",url:"https://takeuforward.org/dbms",pts:"Atomicity · Consistency · Isolation · Durability · Read Committed · Serializable · Dirty Read"},lld:{topic:"Parking Lot — Design Phase (draw UML first)",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Merge K Sorted Lists","https://leetcode.com/problems/merge-k-sorted-lists/","LC","H"),L("Flatten Multilevel DLL","https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/","LC","M"),L("Reverse Nodes in K-Group","https://leetcode.com/problems/reverse-nodes-in-k-group/","LC","H")]},
+
+{day:21,week:3,dayName:"Sun",weekend:true,dsa:{watch:[C(244,"Remove Nth node from end","both"),C(245,"Reverse LinkedList — iterative & recursive","both"),C(246,"Check Palindrome LL","both"),C(247,"Add 1 to number as LL","both")],solve:[L("Linked List Cycle II","https://leetcode.com/problems/linked-list-cycle-ii/","LC","M"),L("Delete Middle Node","https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/","LC","M"),L("Find Length of Loop","https://www.geeksforgeeks.org/problems/find-length-of-loop/1","GFG","M"),L("Sort List","https://leetcode.com/problems/sort-list/","LC","M")]},cs:{sub:"DBMS",topic:"Concurrency Control — Locking, Timestamp Ordering",url:"https://takeuforward.org/dbms",pts:"Shared/Exclusive Locks · 2PL · Timestamp Ordering · Deadlock in DBMS · Serialization"},lld:{topic:"Parking Lot — Code implementation",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Merge K Sorted Lists","https://leetcode.com/problems/merge-k-sorted-lists/","LC","H"),L("Reverse Nodes in K-Group","https://leetcode.com/problems/reverse-nodes-in-k-group/","LC","H")]},
+
+{day:22,week:4,dayName:"Mon",weekend:false,dsa:{watch:[C(248,"Find intersection point Y-LinkedList","both"),C(249,"Find middle element of LL","both"),C(250,"Detect loop/cycle in LL","both"),C(251,"Find length of loop","both")],solve:[L("Intersection of Two Linked Lists","https://leetcode.com/problems/intersection-of-two-linked-lists/","LC","E"),L("Linked List Cycle","https://leetcode.com/problems/linked-list-cycle/","LC","E"),L("Linked List Cycle II","https://leetcode.com/problems/linked-list-cycle-ii/","LC","M")]},cs:{sub:"DBMS",topic:"Indexing — B Tree, B+ Tree, Dense vs Sparse",url:"https://takeuforward.org/dbms",pts:"B-Tree vs B+Tree · Dense/Sparse Index · Clustered/Non-clustered · Query with Index"},lld:{topic:"Logging Framework — Design",type:"code",url:"https://takeuforward.org/lld"},practice:[L("LRU Cache","https://leetcode.com/problems/lru-cache/","LC","M"),L("Design Browser History","https://leetcode.com/problems/design-browser-history/","LC","M")]},
+
+{day:23,week:4,dayName:"Tue",weekend:false,dsa:{watch:[C(252,"Delete middle node of LL","both"),C(253,"Find starting point of loop","both"),C(254,"Delete all occurrences key in DLL","both"),C(255,"Find all pairs with sum in DLL","both")],solve:[L("Delete Middle Node of LL","https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/","LC","M"),L("Find Pairs Sum in DLL","https://www.geeksforgeeks.org/problems/find-pairs-with-given-sum-in-doubly-linked-list/1","GFG","M")]},cs:{sub:"DBMS",topic:"Recovery & Backup — WAL, Checkpointing, ARIES",url:"https://takeuforward.org/dbms",pts:"WAL · UNDO/REDO logs · Checkpointing · ARIES algorithm · Backup types"},lld:{topic:"Logging Framework — Code",type:"code",url:"https://takeuforward.org/lld"},practice:[L("LFU Cache","https://leetcode.com/problems/lfu-cache/","LC","H"),L("Design Circular Queue","https://leetcode.com/problems/design-circular-queue/","LC","M")]},
+
+{day:24,week:4,dayName:"Wed",weekend:false,dsa:{watch:[C(73,"Introduction to Trees — types","concept"),C(74,"Binary Tree representation C++","concept"),C(76,"Binary Tree traversals BFS vs DFS","concept"),C(77,"Preorder Traversal","both"),C(78,"Inorder Traversal","both"),C(79,"Postorder Traversal","both")],solve:[L("Binary Tree Preorder Traversal","https://leetcode.com/problems/binary-tree-preorder-traversal/","LC","E"),L("Binary Tree Inorder Traversal","https://leetcode.com/problems/binary-tree-inorder-traversal/","LC","E"),L("Binary Tree Postorder Traversal","https://leetcode.com/problems/binary-tree-postorder-traversal/","LC","E"),L("Level Order Traversal","https://leetcode.com/problems/binary-tree-level-order-traversal/","LC","M")]},cs:{sub:"DBMS",topic:"NoSQL — Types, BASE, CAP Theorem",url:"https://takeuforward.org/dbms",pts:"Document/KV/Column/Graph DB · BASE vs ACID · CAP Theorem · When to use NoSQL"},lld:{topic:"Traffic Signal System — Design",type:"code",url:"https://takeuforward.org/lld"},practice:[L("N-ary Tree Level Order","https://leetcode.com/problems/n-ary-tree-level-order-traversal/","LC","M"),L("Average of Levels in BT","https://leetcode.com/problems/average-of-levels-in-binary-tree/","LC","E")]},
+
+{day:25,week:4,dayName:"Thu",weekend:false,dsa:{watch:[C(80,"Level Order Traversal — BFS","both"),C(81,"Iterative Preorder — stack","both"),C(82,"Iterative Inorder — stack","both"),C(83,"Iterative Postorder — 2 stacks","both"),C(84,"Iterative Postorder — 1 stack","both"),C(85,"All 3 traversals in one pass","both")],solve:[L("N-ary Tree Preorder","https://leetcode.com/problems/n-ary-tree-preorder-traversal/","LC","E"),L("BT Zigzag Level Order","https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/","LC","M"),L("BT Level Order II","https://leetcode.com/problems/binary-tree-level-order-traversal-ii/","LC","M")]},cs:{sub:"DBMS",topic:"Sharding, Partitioning, Distributed DB",url:"https://takeuforward.org/dbms",pts:"Horizontal vs Vertical Sharding · Consistent Hashing · Distributed Transactions · 2PC"},lld:{topic:"Traffic Signal System — Code",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Max Depth of Binary Tree","https://leetcode.com/problems/maximum-depth-of-binary-tree/","LC","E"),L("Min Depth of Binary Tree","https://leetcode.com/problems/minimum-depth-of-binary-tree/","LC","E")]},
+
+{day:26,week:4,dayName:"Fri",weekend:false,dsa:{watch:[C(86,"Max Depth / Height of BT","both"),C(87,"Check Balanced Binary Tree","both"),C(88,"Diameter of Binary Tree","both")],solve:[L("Maximum Depth of Binary Tree","https://leetcode.com/problems/maximum-depth-of-binary-tree/","LC","E"),L("Balanced Binary Tree","https://leetcode.com/problems/balanced-binary-tree/","LC","E"),L("Diameter of Binary Tree","https://leetcode.com/problems/diameter-of-binary-tree/","LC","E"),L("Binary Tree Maximum Path Sum","https://leetcode.com/problems/binary-tree-maximum-path-sum/","LC","H")]},cs:{sub:"CN",topic:"TCP deep dive — flow control, congestion, reliability",url:"https://takeuforward.org/computer-networks",pts:"Sliding Window · Stop-and-Wait · Go-Back-N · Selective Repeat · Congestion Control"},lld:{topic:"Vending Machine — Design + Code",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Invert Binary Tree","https://leetcode.com/problems/invert-binary-tree/","LC","E"),L("Same Tree","https://leetcode.com/problems/same-tree/","LC","E")]},
+
+{day:27,week:4,dayName:"Sat",weekend:true,dsa:{watch:[C(89,"Maximum Path Sum in BT","both"),C(90,"Check Identical Trees","both"),C(91,"Zigzag Traversal","both"),C(92,"Boundary Traversal","both"),C(93,"Vertical Order Traversal","both"),C(94,"Top View of BT","both"),C(95,"Bottom View of BT","both"),C(96,"Right/Left View of BT","both")],solve:[L("BT Zigzag Level Order","https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/","LC","M"),L("Vertical Order Traversal","https://leetcode.com/problems/vertical-order-traversal-of-binary-tree/","LC","H"),L("BT Right Side View","https://leetcode.com/problems/binary-tree-right-side-view/","LC","M"),L("Top View of BT","https://www.geeksforgeeks.org/problems/top-view-of-binary-tree/1","GFG","M"),L("Bottom View of BT","https://www.geeksforgeeks.org/problems/bottom-view-of-binary-tree/1","GFG","M"),L("Boundary Traversal","https://www.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1","GFG","M")]},cs:{sub:"CN",topic:"Full CN revision + Application Layer protocols",url:"https://takeuforward.org/computer-networks",pts:"HTTP/HTTPS · FTP · SMTP · SNMP · WebSockets · REST vs gRPC"},lld:{topic:"Multithreading — Thread creation, Thread Pool, Executors",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Symmetric Tree","https://leetcode.com/problems/symmetric-tree/","LC","E"),L("LCA of Binary Tree","https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/","LC","M"),L("Max Width of Binary Tree","https://leetcode.com/problems/maximum-width-of-binary-tree/","LC","M")]},
+
+{day:28,week:4,dayName:"Sun",weekend:true,dsa:{watch:[C(97,"Check Symmetrical Binary Tree","both"),C(98,"Print Root to Node Path","both"),C(99,"Lowest Common Ancestor in BT","both"),C(100,"Maximum Width of BT","both"),C(101,"Children Sum Property","both"),C(102,"Nodes at distance K","both"),C(103,"Minimum time to BURN tree","both")],solve:[L("Symmetric Tree","https://leetcode.com/problems/symmetric-tree/","LC","E"),L("Path Sum","https://leetcode.com/problems/path-sum/","LC","E"),L("LCA of Binary Tree","https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/","LC","M"),L("All Nodes Distance K","https://leetcode.com/problems/all-nodes-distance-k-in-binary-tree/","LC","M"),L("Burn Tree","https://www.geeksforgeeks.org/problems/burning-tree/1","GFG","H")]},cs:{sub:"OS",topic:"OS Full Revision — top 30 interview questions",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Write short answers: process vs thread · paging · deadlock conditions · semaphore vs mutex · LRU page replacement"},lld:{topic:"Thread Safety — Locks, Synchronization, Deadlock Prevention",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Count Complete Tree Nodes","https://leetcode.com/problems/count-complete-tree-nodes/","LC","E"),L("Path Sum II","https://leetcode.com/problems/path-sum-ii/","LC","M")]},
+
+{day:29,week:5,dayName:"Mon",weekend:false,dsa:{watch:[C(104,"Count nodes in Complete BT — O(log²N)","both"),C(105,"Requirements to construct Unique BT","concept"),C(106,"Construct BT from Preorder + Inorder","both")],solve:[L("Count Complete Tree Nodes","https://leetcode.com/problems/count-complete-tree-nodes/","LC","E"),L("Construct BT from Preorder+Inorder","https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/","LC","M")]},cs:{sub:"DBMS",topic:"DBMS Full Revision — top 30 interview questions",url:"https://takeuforward.org/dbms",pts:"Write answers: ACID · normalization forms · SQL joins · indexing types · CAP theorem · ACID vs BASE"},lld:{topic:"Producer-Consumer Problem — implementation",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Construct BT Inorder+Postorder","https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/","LC","M"),L("Serialize and Deserialize BT","https://leetcode.com/problems/serialize-and-deserialize-binary-tree/","LC","H")]},
+
+{day:30,week:5,dayName:"Tue",weekend:false,dsa:{watch:[C(107,"Construct BT from Postorder + Inorder","both"),C(108,"Serialize and Deserialize BT","both"),C(109,"Morris Traversal — preorder + inorder","both")],solve:[L("Serialize and Deserialize BT","https://leetcode.com/problems/serialize-and-deserialize-binary-tree/","LC","H"),L("Flatten Binary Tree to Linked List","https://leetcode.com/problems/flatten-binary-tree-to-linked-list/","LC","M")]},cs:{sub:"DBMS",topic:"Database Caching — strategies + Redis basics",url:"https://takeuforward.org/dbms",pts:"Cache aside · Write through · Write back · TTL · Redis data structures"},lld:{topic:"API Design — REST, versioning, rate limiting",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Recover Binary Tree","https://leetcode.com/problems/recover-binary-tree/","LC","M"),L("Populating Next Right Pointers","https://leetcode.com/problems/populating-next-right-pointers-in-each-node/","LC","M")]},
+
+{day:31,week:5,dayName:"Wed",weekend:false,dsa:{watch:[C(110,"Flatten BT to Linked List — 3 approaches","both"),C(111,"Introduction to BST","concept"),C(112,"Search in BST","both"),C(113,"Ceil in BST","both"),C(114,"Floor in BST","both")],solve:[L("Search in a BST","https://leetcode.com/problems/search-in-a-binary-search-tree/","LC","E"),L("Ceil in BST","https://www.geeksforgeeks.org/problems/implementing-ceil-in-bst/1","GFG","M"),L("Floor in BST","https://www.geeksforgeeks.org/problems/floor-in-bst/1","GFG","M")]},cs:{sub:"CN",topic:"CN Full Revision — top 30 interview questions",url:"https://takeuforward.org/computer-networks",pts:"OSI layers · TCP 3-way handshake · DNS lookup · HTTP vs HTTPS · TCP vs UDP · Subnetting"},lld:{topic:"Database Design & Integration — schema design",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Insert into BST","https://leetcode.com/problems/insert-into-a-binary-search-tree/","LC","M"),L("Delete Node in BST","https://leetcode.com/problems/delete-node-in-a-bst/","LC","M")]},
+
+{day:32,week:5,dayName:"Thu",weekend:false,dsa:{watch:[C(115,"Insert node in BST","both"),C(116,"Delete node in BST","both"),C(117,"Kth Smallest/Largest in BST","both"),C(118,"Validate BST","both"),C(119,"LCA in BST","both")],solve:[L("Kth Smallest in BST","https://leetcode.com/problems/kth-smallest-element-in-a-bst/","LC","M"),L("Validate Binary Search Tree","https://leetcode.com/problems/validate-binary-search-tree/","LC","M"),L("LCA of BST","https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/","LC","M")]},cs:{sub:"OS",topic:"OS Mock — 20 rapid-fire questions",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Spooling · Thrashing · Belady's Anomaly · Priority Inversion · Copy-on-Write"},lld:{topic:"Task Management System — Design + Code",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Convert Sorted Array to BST","https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/","LC","E"),L("Unique Binary Search Trees","https://leetcode.com/problems/unique-binary-search-trees/","LC","M")]},
+
+{day:33,week:5,dayName:"Fri",weekend:false,dsa:{watch:[C(120,"Construct BST from Preorder — 3 methods","both"),C(121,"Inorder Successor/Predecessor in BST","both"),C(122,"BST Iterator — O(H) space","both"),C(123,"Two Sum in BST","both")],solve:[L("Construct BST from Preorder","https://leetcode.com/problems/construct-binary-search-tree-from-preorder-traversal/","LC","M"),L("BST Iterator","https://leetcode.com/problems/binary-search-tree-iterator/","LC","M"),L("Two Sum IV — BST","https://leetcode.com/problems/two-sum-iv-input-is-a-bst/","LC","E")]},cs:{sub:"DBMS",topic:"DBMS Mock — 20 rapid-fire SQL + theory questions",url:"https://takeuforward.org/dbms",pts:"Write 5 SQL queries: top N salaries · find duplicates · running total · pivot · recursive CTE"},lld:{topic:"Mock LLD: Parking Lot from scratch — 45 min timed",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Recover Binary Search Tree","https://leetcode.com/problems/recover-binary-search-tree/","LC","M"),L("Largest BST","https://www.geeksforgeeks.org/problems/largest-bst/1","GFG","M")]},
+
+{day:34,week:5,dayName:"Sat",weekend:true,dsa:{watch:[C(124,"Recover BST — 2 nodes swapped","both"),C(125,"Largest BST in Binary Tree","both")],solve:[L("Recover Binary Search Tree","https://leetcode.com/problems/recover-binary-search-tree/","LC","M"),L("Unique BSTs II","https://leetcode.com/problems/unique-binary-search-trees-ii/","LC","M"),L("All Elements in Two BSTs","https://leetcode.com/problems/all-elements-in-two-binary-search-trees/","LC","M"),L("Balance a BST","https://leetcode.com/problems/balance-a-binary-search-tree/","LC","M"),L("Largest BST","https://www.geeksforgeeks.org/problems/largest-bst/1","GFG","M")]},cs:{sub:"CN",topic:"CN Mock — 20 rapid-fire questions",url:"https://takeuforward.org/computer-networks",pts:"TCP flow control · ARP · ICMP · HTTPS full flow · Load balancer types · DNS record types"},lld:{topic:"Mock LLD: Logging Framework from scratch — 45 min timed",type:"code",url:"https://takeuforward.org/lld"},practice:[L("BST to Greater Sum Tree","https://leetcode.com/problems/binary-search-tree-to-greater-sum-tree/","LC","M"),L("Two Sum IV Input BST","https://leetcode.com/problems/two-sum-iv-input-is-a-bst/","LC","E"),L("Min Absolute Difference in BST","https://leetcode.com/problems/minimum-absolute-difference-in-bst/","LC","E")]},
+
+{day:35,week:5,dayName:"Sun",weekend:true,dsa:{watch:[],solve:[L("Serialize and Deserialize BST","https://leetcode.com/problems/serialize-and-deserialize-bst/","LC","M"),L("Trim a BST","https://leetcode.com/problems/trim-a-binary-search-tree/","LC","M"),L("Delete Nodes Return Forest","https://leetcode.com/problems/delete-nodes-and-return-forest/","LC","M")]},cs:{sub:"ALL",topic:"Full CS revision — write cheat sheet for all 3 subjects",url:"https://takeuforward.org/",pts:"1-page summary: OS (10 points) · DBMS (10 points) · CN (10 points)"},lld:{topic:"Mock LLD: Vending Machine from scratch — 45 min timed",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Path Sum III","https://leetcode.com/problems/path-sum-iii/","LC","M"),L("Binary Tree Cameras","https://leetcode.com/problems/binary-tree-cameras/","LC","H"),L("House Robber III","https://leetcode.com/problems/house-robber-iii/","LC","M")]},
+
+{day:36,week:6,dayName:"Mon",weekend:false,dsa:{watch:[C(126,"Graph Introduction — types, conventions","concept"),C(127,"Graph Representation C++ (adj list & matrix)","concept"),C(129,"What are Connected Components?","concept"),C(130,"BFS Traversal in Graphs","both")],solve:[L("BFS Traversal","https://www.geeksforgeeks.org/problems/bfs-traversal-of-graph/1","GFG","E"),L("DFS Traversal","https://www.geeksforgeeks.org/problems/depth-first-traversal-for-a-graph/1","GFG","E"),L("Number of Provinces","https://leetcode.com/problems/number-of-provinces/","LC","M")]},cs:{sub:"OS",topic:"OS Security — RBAC, privilege escalation, system calls",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"User space vs Kernel space · System calls · RBAC · Privilege escalation · Buffer overflow"},lld:{topic:"All About APIs — REST, GraphQL, gRPC design",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Find if Path Exists in Graph","https://leetcode.com/problems/find-if-path-exists-in-graph/","LC","E"),L("Keys and Rooms","https://leetcode.com/problems/keys-and-rooms/","LC","M")]},
+
+{day:37,week:6,dayName:"Tue",weekend:false,dsa:{watch:[C(131,"DFS Traversal in Graphs","both"),C(132,"Number of Provinces","both"),C(133,"Number of Islands","both")],solve:[L("Number of Islands","https://leetcode.com/problems/number-of-islands/","LC","M"),L("Flood Fill","https://leetcode.com/problems/flood-fill/","LC","E"),L("Rotting Oranges","https://leetcode.com/problems/rotting-oranges/","LC","M")]},cs:{sub:"DBMS",topic:"Database Scaling — vertical/horizontal, read replicas",url:"https://takeuforward.org/dbms",pts:"Vertical vs Horizontal scaling · Read replicas · Master-slave replication · Database proxy"},lld:{topic:"Observer Pattern full implementation + pub/sub",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Max Area of Island","https://leetcode.com/problems/max-area-of-island/","LC","M"),L("01 Matrix","https://leetcode.com/problems/01-matrix/","LC","M")]},
+
+{day:38,week:6,dayName:"Wed",weekend:false,dsa:{watch:[C(134,"Flood Fill Algorithm","both"),C(135,"Rotten Oranges — BFS","both"),C(136,"Detect Cycle Undirected Graph BFS","both"),C(137,"Detect Cycle Undirected Graph DFS","both")],solve:[L("Detect Cycle in Undirected Graph","https://www.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1","GFG","M"),L("Surrounded Regions","https://leetcode.com/problems/surrounded-regions/","LC","M"),L("Number of Enclaves","https://leetcode.com/problems/number-of-enclaves/","LC","M")]},cs:{sub:"CN",topic:"Network Monitoring — Wireshark, QoS, Congestion Control",url:"https://takeuforward.org/computer-networks",pts:"QoS metrics · Congestion control (TCP Reno/Cubic) · Wireshark usage · SNMP"},lld:{topic:"Strategy Pattern full implementation",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Pacific Atlantic Water Flow","https://leetcode.com/problems/pacific-atlantic-water-flow/","LC","M"),L("Word Search","https://leetcode.com/problems/word-search/","LC","M")]},
+
+{day:39,week:6,dayName:"Thu",weekend:false,dsa:{watch:[C(138,"0-1 Matrix — Distance of nearest 1","both"),C(139,"Surrounded Regions","both"),C(140,"Number of Enclaves","both"),C(141,"Number of Distinct Islands","both")],solve:[L("Course Schedule","https://leetcode.com/problems/course-schedule/","LC","M"),L("Course Schedule II","https://leetcode.com/problems/course-schedule-ii/","LC","M"),L("Find Eventual Safe States","https://leetcode.com/problems/find-eventual-safe-states/","LC","M")]},cs:{sub:"OS",topic:"Virtualization — hypervisors, containers, Docker vs VM",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Type 1 vs Type 2 Hypervisor · Docker vs VM · Namespaces · cgroups"},lld:{topic:"Mock LLD: Design LRU Cache from scratch — 40 min",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Is Graph Bipartite?","https://leetcode.com/problems/is-graph-bipartite/","LC","M"),L("Detect Cycle in Directed Graph","https://www.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1","GFG","M")]},
+
+{day:40,week:6,dayName:"Fri",weekend:false,dsa:{watch:[C(142,"Bipartite Graph — BFS","both"),C(143,"Bipartite Graph — DFS","both"),C(144,"Detect cycle Directed Graph DFS","both"),C(145,"Find Eventual Safe States DFS","both")],solve:[L("Topological Sort (DFS)","https://www.geeksforgeeks.org/problems/topological-sort/1","GFG","M"),L("Alien Dictionary","https://www.geeksforgeeks.org/problems/alien-dictionary/1","GFG","H"),L("Course Schedule II","https://leetcode.com/problems/course-schedule-ii/","LC","M")]},cs:{sub:"DBMS",topic:"Big Data — MapReduce, Hadoop, Spark overview",url:"https://takeuforward.org/dbms",pts:"MapReduce paradigm · Hadoop ecosystem · Spark vs Hadoop · Data Warehouse vs DB · OLAP vs OLTP"},lld:{topic:"Builder Pattern — QueryBuilder complex example",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Minimum Height Trees","https://leetcode.com/problems/minimum-height-trees/","LC","M"),L("Parallel Courses","https://leetcode.com/problems/parallel-courses/","LC","M")]},
+
+{day:41,week:6,dayName:"Sat",weekend:true,dsa:{watch:[C(146,"Topological Sort — DFS","both"),C(147,"Kahn's Algorithm — BFS Topo Sort","both"),C(148,"Detect Cycle Directed BFS/Kahn's","both"),C(149,"Course Schedule I and II","both"),C(150,"Find Eventual Safe States BFS","both"),C(151,"Alien Dictionary","both")],solve:[L("Word Ladder I","https://leetcode.com/problems/word-ladder/","LC","H"),L("Network Delay Time (Dijkstra)","https://leetcode.com/problems/network-delay-time/","LC","M"),L("Path with Minimum Effort","https://leetcode.com/problems/path-with-minimum-effort/","LC","M"),L("Cheapest Flights Within K Stops","https://leetcode.com/problems/cheapest-flights-within-k-stops/","LC","M"),L("Min Cost Connect All Points","https://leetcode.com/problems/min-cost-to-connect-all-points/","LC","M")]},cs:{sub:"ALL",topic:"Mock CS interview — 30 mixed questions across all subjects",url:"https://takeuforward.org/",pts:"10 OS + 10 DBMS + 10 CN — time yourself 30 minutes"},lld:{topic:"Mock LLD: Design Notification System — 1 hour",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Shortest Path in Binary Matrix","https://leetcode.com/problems/shortest-path-in-binary-matrix/","LC","M"),L("Swim in Rising Water","https://leetcode.com/problems/swim-in-rising-water/","LC","H")]},
+
+{day:42,week:6,dayName:"Sun",weekend:true,dsa:{watch:[C(152,"Shortest Path DAG — topological","both"),C(153,"Shortest Path Undirected unit weights","both"),C(157,"Dijkstra's — Priority Queue","both"),C(158,"Dijkstra — Using Set","both"),C(163,"Cheapest Flights K Stops","both")],solve:[L("Bellman-Ford","https://www.geeksforgeeks.org/problems/bellman-ford/1","GFG","M"),L("Floyd-Warshall","https://www.geeksforgeeks.org/problems/implementing-floyd-warshall2042/1","GFG","M"),L("Find City Smallest Neighbours","https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/","LC","M"),L("Min Spanning Tree","https://www.geeksforgeeks.org/problems/minimum-spanning-tree/1","GFG","M")]},cs:{sub:"ALL",topic:"System Design basics — read scalability primer",url:"https://github.com/donnemartin/system-design-primer",pts:"Scalability · Horizontal scaling · Load balancing · Caching · Database replication"},lld:{topic:"Mock LLD: Design Snake & Ladder — 45 min",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Accounts Merge","https://leetcode.com/problems/accounts-merge/","LC","M"),L("Making a Large Island","https://leetcode.com/problems/making-a-large-island/","LC","H"),L("Most Stones Removed","https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/","LC","M")]},
+
+{day:43,week:7,dayName:"Mon",weekend:false,dsa:{watch:[C(166,"Bellman Ford Algorithm","both"),C(167,"Floyd Warshall Algorithm","both"),C(168,"Find City Smallest Neighbours","both"),C(170,"Prim's Algorithm MST","both"),C(172,"Kruskal's Algorithm MST","both")],solve:[L("Critical Connections (Bridges)","https://leetcode.com/problems/critical-connections-in-a-network/","LC","H"),L("Articulation Points","https://www.geeksforgeeks.org/problems/articulation-point-1/1","GFG","H"),L("Strongly Connected Components","https://www.geeksforgeeks.org/problems/strongly-connected-components-kosarajus-algo/1","GFG","M")]},cs:{sub:"OS",topic:"OS written mock — 10 descriptive answers",url:"https://www.youtube.com/playlist?list=PLDzeHZWIZsTr3nwuTegHLa2qlI81QweYG",pts:"Write: deadlock detection · virtual memory · semaphore implementation · scheduling comparison"},lld:{topic:"Review all 23 design patterns — 1-line summary each",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Number of Islands II (DSU)","https://www.geeksforgeeks.org/problems/number-of-islands/1","GFG","H"),L("Making a Large Island","https://leetcode.com/problems/making-a-large-island/","LC","H")]},
+
+{day:44,week:7,dayName:"Tue",weekend:false,dsa:{watch:[C(171,"Disjoint Set — Union by Rank/Size, Path Compression","concept"),C(173,"Provinces — DSU","both"),C(174,"Network Connected — DSU","both"),C(175,"Accounts Merge — DSU","both")],solve:[L("Redundant Connection","https://leetcode.com/problems/redundant-connection/","LC","M"),L("Graph Valid Tree","https://www.geeksforgeeks.org/problems/graph-valid-tree/0","GFG","M")]},cs:{sub:"DBMS",topic:"DBMS written mock — 10 descriptive answers",url:"https://takeuforward.org/dbms",pts:"Write: ACID properties · 3NF vs BCNF example · B+ Tree operations · CAP theorem trade-offs"},lld:{topic:"DP 1: Introduction to Dynamic Programming — 33 min MUST WATCH",type:"concept",url:"https://takeuforward.org/dp"},practice:[L("Climbing Stairs","https://leetcode.com/problems/climbing-stairs/","LC","E"),L("House Robber","https://leetcode.com/problems/house-robber/","LC","M")]},
+
+{day:45,week:7,dayName:"Wed",weekend:false,dsa:{watch:[C(182,"DP 1: Intro — Memoization, Tabulation, Space Opt","concept"),C(183,"DP 2: Climbing Stairs — 1D recurrence","both"),C(184,"DP 3: Frog Jump — 1D DP","both"),C(185,"DP 4: Frog Jump with K distance","both")],solve:[L("Climbing Stairs","https://leetcode.com/problems/climbing-stairs/","LC","E"),L("Min Cost Climbing Stairs","https://leetcode.com/problems/min-cost-climbing-stairs/","LC","E"),L("Frog Jump GFG","https://www.geeksforgeeks.org/problems/geek-jump/1","GFG","M"),L("House Robber","https://leetcode.com/problems/house-robber/","LC","M")]},cs:{sub:"CN",topic:"CN written mock — 10 descriptive answers",url:"https://takeuforward.org/computer-networks",pts:"Write: HTTP vs HTTPS · DNS resolution steps · TCP 3-way handshake · OSI vs TCP/IP · OSPF vs BGP"},lld:{topic:"Strategy Pattern + Observer Pattern full code",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Tribonacci Number","https://leetcode.com/problems/n-th-tribonacci-number/","LC","E"),L("Jump Game","https://leetcode.com/problems/jump-game/","LC","M")]},
+
+{day:46,week:7,dayName:"Thu",weekend:false,dsa:{watch:[C(186,"DP 5: Max Sum Non-Adjacent / House Robber","both"),C(187,"DP 6: House Robber II","both"),C(188,"DP 7: Ninja's Training — MUST WATCH 2D DP","both")],solve:[L("House Robber II","https://leetcode.com/problems/house-robber-ii/","LC","M"),L("Ninja's Training GFG","https://www.geeksforgeeks.org/problems/geeks-training/1","GFG","M"),L("Maximum Sum Non-Adjacent","https://leetcode.com/problems/house-robber/","LC","M")]},cs:{sub:"ALL",topic:"Full mock interview — 45 min, 30 mixed CS questions",url:"https://takeuforward.org/",pts:"Time yourself. Grade your answers. Note weak areas."},lld:{topic:"Singleton (thread-safe) + Factory full implementation",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Decode Ways","https://leetcode.com/problems/decode-ways/","LC","M"),L("Perfect Squares","https://leetcode.com/problems/perfect-squares/","LC","M")]},
+
+{day:47,week:7,dayName:"Fri",weekend:false,dsa:{watch:[C(189,"DP 8: Grid Unique Paths — all techniques","both"),C(190,"DP 9: Unique Paths 2 — with obstacles","both"),C(191,"DP 10: Minimum Path Sum in Grid","both")],solve:[L("Unique Paths","https://leetcode.com/problems/unique-paths/","LC","M"),L("Unique Paths II","https://leetcode.com/problems/unique-paths-ii/","LC","M"),L("Minimum Path Sum","https://leetcode.com/problems/minimum-path-sum/","LC","M")]},cs:{sub:"ALL",topic:"System Design — Consistent Hashing + Message Queues",url:"https://github.com/donnemartin/system-design-primer",pts:"Consistent Hashing · Message Queues (Kafka/RabbitMQ) · Eventual Consistency · Event-driven"},lld:{topic:"Builder Pattern — QueryBuilder complex example",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Minimum Cost for Tickets","https://leetcode.com/problems/minimum-cost-for-tickets/","LC","M"),L("Dungeon Game","https://leetcode.com/problems/dungeon-game/","LC","H")]},
+
+{day:48,week:7,dayName:"Sat",weekend:true,dsa:{watch:[C(192,"DP 11: Triangle — variable ending point","both"),C(193,"DP 12: Min/Max Falling Path Sum","both"),C(194,"DP 13: Cherry Pickup II — 3D DP","both"),C(195,"DP 14: Subset Sum = Target","both"),C(196,"DP 15: Partition Equal Subset Sum","both"),C(197,"DP 16: Min Abs Diff Partition","both")],solve:[L("Triangle","https://leetcode.com/problems/triangle/","LC","M"),L("Min Falling Path Sum","https://leetcode.com/problems/minimum-falling-path-sum/","LC","M"),L("Cherry Pickup II","https://leetcode.com/problems/cherry-pickup-ii/","LC","H"),L("Partition Equal Subset Sum","https://leetcode.com/problems/partition-equal-subset-sum/","LC","M"),L("Target Sum","https://leetcode.com/problems/target-sum/","LC","M"),L("Last Stone Weight II","https://leetcode.com/problems/last-stone-weight-ii/","LC","M")]},cs:{sub:"ALL",topic:"Read 5 FAANG engineering blogs + system design cases",url:"https://github.com/donnemartin/system-design-primer",pts:"Netflix CDN · Uber surge pricing · WhatsApp message queue · Google search indexing · Instagram newsfeed"},lld:{topic:"Mock LLD: Design Rate Limiter (Token Bucket) — 1 hour",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Subset Sum GFG","https://www.geeksforgeeks.org/problems/subset-sum-problem-1611555638/1","GFG","M"),L("Count Subsets Sum K","https://www.geeksforgeeks.org/problems/perfect-sum-problem5633/1","GFG","M"),L("0/1 Knapsack","https://www.geeksforgeeks.org/problems/0-1-knapsack-problem0945/1","GFG","M")]},
+
+{day:49,week:7,dayName:"Sun",weekend:true,dsa:{watch:[C(199,"DP 18: Count Partitions Diff D","both"),C(200,"DP 19: 0/1 Knapsack — recursion to 1D","both"),C(201,"DP 20: Minimum Coins","both"),C(203,"DP 22: Coin Change 2","both"),C(204,"DP 23: Unbounded Knapsack","both")],solve:[L("Coin Change","https://leetcode.com/problems/coin-change/","LC","M"),L("Coin Change II","https://leetcode.com/problems/coin-change-ii/","LC","M"),L("Unbounded Knapsack GFG","https://www.geeksforgeeks.org/problems/knapsack-with-duplicate-items4201/1","GFG","M"),L("Rod Cutting","https://www.geeksforgeeks.org/problems/rod-cutting0840/1","GFG","M")]},cs:{sub:"ALL",topic:"Behavioral interview prep — STAR format, 10 stories",url:"https://www.techinterviewhandbook.org/behavioral-interview/",pts:"Prepare stories: biggest challenge · conflict · failure · leadership · impact. USE your NanoMind + Log Classifier projects!"},lld:{topic:"Mock LLD: Design Splitwise — 1 hour timed",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Ones and Zeroes","https://leetcode.com/problems/ones-and-zeroes/","LC","M"),L("Min Cost to Fill Bag","https://www.geeksforgeeks.org/problems/minimum-cost-to-fill-given-weight-in-a-bag1956/1","GFG","M")]},
+
+{day:50,week:8,dayName:"Mon",weekend:false,dsa:{watch:[C(206,"DP 25: LCS — top down, bottom up, space opt","both"),C(207,"DP 26: Print LCS","both"),C(208,"DP 27: Longest Common Substring","both")],solve:[L("Longest Common Subsequence","https://leetcode.com/problems/longest-common-subsequence/","LC","M"),L("Longest Common Substring GFG","https://www.geeksforgeeks.org/problems/longest-common-substring1452/1","GFG","M"),L("Shortest Common Supersequence","https://leetcode.com/problems/shortest-common-supersequence/","LC","H")]},cs:{sub:"OS",topic:"Quick fire — 50 OS interview Q&A",url:"https://www.interviewbit.com/operating-system-interview-questions/",pts:"Focus: Process scheduling · Memory management · File systems · IPC · Synchronization"},lld:{topic:"Buy and Sell Stocks I-V DP — all variants",type:"both",url:"https://takeuforward.org/dp"},practice:[L("Best Time Stock II","https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/","LC","M"),L("Best Time Stock III","https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/","LC","H"),L("Best Time Stock IV","https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/","LC","H")]},
+
+{day:51,week:8,dayName:"Tue",weekend:false,dsa:{watch:[C(209,"DP 28: Longest Palindromic Subsequence","both"),C(210,"DP 29: Min Insertions to Make Palindrome","both"),C(213,"DP 32: Distinct Subsequences","both"),C(214,"DP 33: Edit Distance","both"),C(215,"DP 34: Wildcard Matching","both")],solve:[L("Longest Palindromic Subsequence","https://leetcode.com/problems/longest-palindromic-subsequence/","LC","M"),L("Edit Distance","https://leetcode.com/problems/edit-distance/","LC","M"),L("Distinct Subsequences","https://leetcode.com/problems/distinct-subsequences/","LC","H"),L("Wildcard Matching","https://leetcode.com/problems/wildcard-matching/","LC","H")]},cs:{sub:"DBMS",topic:"Quick fire — 50 DBMS interview Q&A",url:"https://www.interviewbit.com/dbms-interview-questions/",pts:"Focus: SQL queries · Normalization · Indexing · Transactions · NoSQL trade-offs"},lld:{topic:"Stocks DP + Cooldown + Transaction Fee",type:"both",url:"https://takeuforward.org/dp"},practice:[L("Buy Sell Stock Cooldown","https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/","LC","M"),L("Buy Sell Stock with Fee","https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-transaction-fee/","LC","M")]},
+
+{day:52,week:8,dayName:"Wed",weekend:false,dsa:{watch:[C(221,"DP 41: LIS — Memoization","both"),C(222,"DP 42: Print LIS — Tabulation","both"),C(223,"DP 43: LIS — Binary Search O(NlogN)","both"),C(224,"DP 44: Largest Divisible Subset","both"),C(225,"DP 45: Longest String Chain","both")],solve:[L("Longest Increasing Subsequence","https://leetcode.com/problems/longest-increasing-subsequence/","LC","M"),L("Largest Divisible Subset","https://leetcode.com/problems/largest-divisible-subset/","LC","M"),L("Longest String Chain","https://leetcode.com/problems/longest-string-chain/","LC","M"),L("Russian Doll Envelopes","https://leetcode.com/problems/russian-doll-envelopes/","LC","H")]},cs:{sub:"CN",topic:"Quick fire — 50 CN interview Q&A",url:"https://www.interviewbit.com/networking-interview-questions/",pts:"Focus: OSI layers · TCP/UDP · DNS/HTTP/HTTPS · IP subnetting · Security basics"},lld:{topic:"MCM + Burst Balloons + Palindrome Partition II",type:"both",url:"https://takeuforward.org/dp"},practice:[L("Matrix Chain Multiplication","https://www.geeksforgeeks.org/problems/matrix-chain-multiplication0303/1","GFG","H"),L("Burst Balloons","https://leetcode.com/problems/burst-balloons/","LC","H"),L("Palindrome Partitioning II","https://leetcode.com/problems/palindrome-partitioning-ii/","LC","H")]},
+
+{day:53,week:8,dayName:"Thu",weekend:false,dsa:{watch:[C(226,"DP 46: Longest Bitonic Subsequence","both"),C(227,"DP 47: Count LIS","both"),C(228,"DP 48: Matrix Chain Multiplication","both"),C(230,"DP 50: Min Cost Cut Stick","both"),C(231,"DP 51: Burst Balloons","both")],solve:[L("Longest Bitonic Subsequence","https://www.geeksforgeeks.org/problems/longest-bitonic-subsequence0824/1","GFG","M"),L("Number of LIS","https://leetcode.com/problems/number-of-longest-increasing-subsequences/","LC","M"),L("Strange Printer","https://leetcode.com/problems/strange-printer/","LC","H"),L("Min Cost to Cut a Stick","https://leetcode.com/problems/minimum-cost-to-cut-a-stick/","LC","H")]},cs:{sub:"ALL",topic:"Mock Interview: 2 DSA + 10 CS questions (timed)",url:"https://takeuforward.org/",pts:"Set 60-min timer. 2 LeetCode mediums + 10 rapid CS questions. Grade yourself."},lld:{topic:"Partition Array for Max Sum + Max Rectangle + Count Square",type:"both",url:"https://takeuforward.org/dp"},practice:[L("Partition Array for Max Sum","https://leetcode.com/problems/partition-array-for-maximum-sum/","LC","M"),L("Maximal Rectangle","https://leetcode.com/problems/maximal-rectangle/","LC","H"),L("Count Square Submatrices","https://leetcode.com/problems/count-square-submatrices-with-all-ones/","LC","M")]},
+
+{day:54,week:8,dayName:"Fri",weekend:false,dsa:{watch:[C(297,"Stack & Queue Introduction — implementations","concept"),C(298,"Balanced Parentheses","both"),C(300,"Implement Min Stack","both"),C(301,"Next Greater Element","both"),C(302,"Next Greater Element II — circular","both"),C(303,"Previous Smaller Element","both")],solve:[L("Valid Parentheses","https://leetcode.com/problems/valid-parentheses/","LC","E"),L("Min Stack","https://leetcode.com/problems/min-stack/","LC","M"),L("Next Greater Element I","https://leetcode.com/problems/next-greater-element-i/","LC","E"),L("Next Greater Element II","https://leetcode.com/problems/next-greater-element-ii/","LC","M"),L("Daily Temperatures","https://leetcode.com/problems/daily-temperatures/","LC","M")]},cs:{sub:"ALL",topic:"Write final cheat sheets — 1 page per subject",url:"https://takeuforward.org/",pts:"Summarize each subject to 1 crisp page. These are your revision sheets for interview day."},lld:{topic:"Mock LLD: Design Twitter Timeline — 1 hour",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Asteroid Collision","https://leetcode.com/problems/asteroid-collision/","LC","M"),L("Remove K Digits","https://leetcode.com/problems/remove-k-digits/","LC","M")]},
+
+{day:55,week:8,dayName:"Sat",weekend:true,dsa:{watch:[C(304,"Trapping Rainwater — 2 approaches","both"),C(305,"Sum of Subarray Minimum","both"),C(307,"Asteroid Collision","both"),C(308,"Largest Rectangle in Histogram","both"),C(309,"Maximal Rectangle","both")],solve:[L("Trapping Rain Water","https://leetcode.com/problems/trapping-rain-water/","LC","H"),L("Sum of Subarray Minimums","https://leetcode.com/problems/sum-of-subarray-minimums/","LC","M"),L("Largest Rectangle Histogram","https://leetcode.com/problems/largest-rectangle-in-histogram/","LC","H"),L("Maximal Rectangle","https://leetcode.com/problems/maximal-rectangle/","LC","H"),L("Sliding Window Maximum","https://leetcode.com/problems/sliding-window-maximum/","LC","H"),L("Celebrity Problem","https://www.geeksforgeeks.org/problems/the-celebrity-problem/1","GFG","M")]},cs:{sub:"ALL",topic:"Full system design mock — URL Shortener + WhatsApp",url:"https://github.com/donnemartin/system-design-primer",pts:"URL Shortener: hashing · DB schema · caching · 302 redirect · scaling · WhatsApp: WebSockets · message queue · storage"},lld:{topic:"Mock LLD: Design Online Booking System — 1 hour",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Stock Span Problem","https://www.geeksforgeeks.org/problems/stock-span-problem-1587115621/1","GFG","M"),L("Remove K Digits","https://leetcode.com/problems/remove-k-digits/","LC","M"),L("Evaluate Reverse Polish Notation","https://leetcode.com/problems/evaluate-reverse-polish-notation/","LC","M")]},
+
+{day:56,week:8,dayName:"Sun",weekend:true,dsa:{watch:[C(310,"Remove K Digits","both"),C(311,"Stock Span Problem","both"),C(312,"Sliding Window Maximum","both"),C(313,"Celebrity Problem","both"),C(314,"Implement LRU Cache","both"),C(315,"Implement LFU Cache — Hard","both")],solve:[L("LRU Cache","https://leetcode.com/problems/lru-cache/","LC","M"),L("LFU Cache","https://leetcode.com/problems/lfu-cache/","LC","H"),L("Sliding Window Maximum","https://leetcode.com/problems/sliding-window-maximum/","LC","H")]},cs:{sub:"ALL",topic:"FULL MOCK INTERVIEW — simulate real conditions",url:"https://takeuforward.org/",pts:"2 DSA (45 min) + LLD (45 min) + CS Fundamentals (20 min) + Behavioral (10 min). RECORD YOURSELF."},lld:{topic:"Final LLD Mock: Design Uber/Ola — 1 hour",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Design HashMap","https://leetcode.com/problems/design-hashmap/","LC","E"),L("Design Twitter","https://leetcode.com/problems/design-twitter/","LC","M")]},
+
+{day:57,week:9,dayName:"Mon",weekend:false,dsa:{watch:[],solve:[L("Word Break","https://leetcode.com/problems/word-break/","LC","M"),L("Word Break II","https://leetcode.com/problems/word-break-ii/","LC","H"),L("Maximal Square","https://leetcode.com/problems/maximal-square/","LC","M"),L("Regular Expression Matching","https://leetcode.com/problems/regular-expression-matching/","LC","H")]},cs:{sub:"ALL",topic:"Weak area revision — target your lowest-scoring subject",url:"https://takeuforward.org/",pts:"From mock feedback: identify 5 weakest topics. Study only those today."},lld:{topic:"Re-code your weakest LLD problem from scratch",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Longest Palindromic Substring","https://leetcode.com/problems/longest-palindromic-substring/","LC","M"),L("Palindromic Substrings","https://leetcode.com/problems/palindromic-substrings/","LC","M")]},
+
+{day:58,week:9,dayName:"Tue",weekend:false,dsa:{watch:[],solve:[L("Trapping Rain Water","https://leetcode.com/problems/trapping-rain-water/","LC","H"),L("Max Profit in Job Scheduling","https://leetcode.com/problems/maximum-profit-in-job-scheduling/","LC","H"),L("Ugly Number II","https://leetcode.com/problems/ugly-number-ii/","LC","M")]},cs:{sub:"DBMS",topic:"SQL practice — write 10 complex queries",url:"https://leetcode.com/problemset/database/",pts:"Top N salaries · Consecutive numbers · Department top 3 · Nth highest · Employees > managers"},lld:{topic:"All design patterns — 5-min implementation each",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Rank Scores SQL","https://leetcode.com/problems/rank-scores/","LC","M"),L("Consecutive Numbers SQL","https://leetcode.com/problems/consecutive-numbers/","LC","M"),L("Department Top 3 Salaries","https://leetcode.com/problems/department-top-three-salaries/","LC","H")]},
+
+{day:59,week:9,dayName:"Wed",weekend:false,dsa:{watch:[],solve:[L("K Closest Points to Origin","https://leetcode.com/problems/k-closest-points-to-origin/","LC","M"),L("Top K Frequent Elements","https://leetcode.com/problems/top-k-frequent-elements/","LC","M"),L("Find Median from Data Stream","https://leetcode.com/problems/find-median-from-data-stream/","LC","H"),L("Merge K Sorted Lists","https://leetcode.com/problems/merge-k-sorted-lists/","LC","H")]},cs:{sub:"ALL",topic:"Final revision — review all cheat sheets + behavioral stories",url:"https://takeuforward.org/",pts:"Re-read OS/DBMS/CN cheat sheets. Practice 10 behavioral stories out loud. You got this."},lld:{topic:"Final review — write design decisions for all 5 machine coding problems",type:"concept",url:"https://takeuforward.org/lld"},practice:[L("Reorganize String","https://leetcode.com/problems/reorganize-string/","LC","M"),L("Task Scheduler","https://leetcode.com/problems/task-scheduler/","LC","M")]},
+
+{day:60,week:9,dayName:"Thu",weekend:false,dsa:{watch:[],solve:[L("Implement Trie","https://leetcode.com/problems/implement-trie-prefix-tree/","LC","M"),L("Word Search II","https://leetcode.com/problems/word-search-ii/","LC","H"),L("Random Pick with Weight","https://leetcode.com/problems/random-pick-with-weight/","LC","M")]},cs:{sub:"ALL",topic:"FINAL FULL MOCK — record yourself",url:"https://takeuforward.org/",pts:"2 Hard DSA · 1 LLD (Splitwise or Twitter) · 10 CS fundamentals · 3 behavioral stories. Then REST."},lld:{topic:"FINAL: Write clean solutions for top 5 LLD problems",type:"code",url:"https://takeuforward.org/lld"},practice:[L("Design In-Memory File System","https://leetcode.com/problems/design-in-memory-file-system/","LC","H"),L("Course Schedule III","https://leetcode.com/problems/course-schedule-iii/","LC","H")]}
+];
+
+// ── STATE ──────────────────────────────────────────────────────────────
+const weekThemeNames=["","Week 1","Week 2","Week 3","Week 4","Week 5","Week 6","Week 7","Week 8","Final Sprint"];
+let completed = {};
+let totalTasks = 0;
+let currentWeek = 1;
+let currentFilter = 'all';
+
+const STORAGE_KEY = 'faang60_progress_v2';
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(completed)); } catch(e){}
+  document.getElementById('last-saved').textContent = new Date().toLocaleTimeString();
+}
+
+function load() {
+  try {
+    const d = localStorage.getItem(STORAGE_KEY);
+    if(d) completed = JSON.parse(d);
+  } catch(e){}
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2000);
+}
+
+// ── TASK COUNTING ──────────────────────────────────────────────────────
+function getDayTasks(d) {
+  const tasks = [];
+  (d.dsa?.watch||[]).forEach((w,i)=>tasks.push({key:`d${d.day}_w_${i}`,type:'watch'}));
+  (d.dsa?.solve||[]).forEach((p,i)=>tasks.push({key:`d${d.day}_s_${i}`,type:'solve'}));
+  if(d.cs) tasks.push({key:`d${d.day}_cs_0`,type:'cs'});
+  if(d.lld) tasks.push({key:`d${d.day}_lld_0`,type:'lld'});
+  (d.practice||[]).forEach((p,i)=>tasks.push({key:`d${d.day}_p_${i}`,type:'practice'}));
+  return tasks;
+}
+
+function countDayDone(d) {
+  return getDayTasks(d).filter(t=>completed[t.key]).length;
+}
+
+function countAllTasks() {
+  return days.reduce((s,d)=>s+getDayTasks(d).length, 0);
+}
+
+function countAllDone() {
+  return days.reduce((s,d)=>s+countDayDone(d), 0);
+}
+
+// ── TOGGLE ──────────────────────────────────────────────────────────────
+window.toggleTask = function(key, el) {
+  completed[key] = !completed[key];
+  const row = el.closest('.item-row');
+  if(row) row.classList.toggle('done', completed[key]);
+  save();
+  updateStats();
+  const dayNum = parseInt(key.split('_')[0].replace('d',''));
+  const d = days.find(x=>x.day===dayNum);
+  if(d) updateDayMeta(d);
+  if(completed[key]) showToast('✓ Task complete!');
+};
+
+// ── STATS ──────────────────────────────────────────────────────────────
+function updateStats() {
+  const done = countAllDone();
+  const total = totalTasks;
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('stat-done').textContent = done;
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-pct').textContent = pct + '%';
+  document.getElementById('main-progress').style.width = pct + '%';
+  document.getElementById('prog-label-r').textContent = `${done} / ${total} tasks`;
+
+  const today = days[Math.min(Math.floor(Date.now()/86400000) - Math.floor(new Date('2025-01-01').getTime()/86400000), 59)];
+  document.getElementById('stat-day').textContent = `Day ${Math.min(done > 0 ? days.findIndex(d=>countDayDone(d)<getDayTasks(d).length)+1 : 1, 60)}`;
+}
+
+function updateDayMeta(d) {
+  const done = countDayDone(d);
+  const total = getDayTasks(d).length;
+  const el = document.getElementById(`daymeta-${d.day}`);
+  if(el) el.textContent = `${done}/${total}`;
+  const card = document.getElementById(`daycard-${d.day}`);
+  if(card) card.classList.toggle('completed-card', done === total && total > 0);
+}
+
+// ── FILTER ──────────────────────────────────────────────────────────────
+window.setFilter = function(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderWeek(currentWeek);
+};
+
+// ── RENDER ──────────────────────────────────────────────────────────────
+function diffBadge(d) {
+  if(!d) return '';
+  const cls = d==='E'?'diff-e':d==='H'?'diff-h':'diff-m';
+  const lbl = d==='E'?'E':d==='H'?'H':'M';
+  return `<span class="${cls}">${lbl}</span>`;
+}
+
+function platBadge(p) {
+  return p==='GFG' ? '<span class="plat-gfg">GFG</span>' : '<span class="plat-lc">LC</span>';
+}
+
+function problemRow(item, key) {
+  const isDone = completed[key] ? 'done' : '';
+  return `<div class="item-row ${isDone}">
+    <input type="checkbox" ${completed[key]?'checked':''} onchange="toggleTask('${key}',this)">
+    <a class="item-link" href="${item.url}" target="_blank" rel="noopener">${item.name}</a>
+    ${platBadge(item.plat)}${diffBadge(item.diff)}
+  </div>`;
+}
+
+function watchRow(item, key) {
+  const isDone = completed[key] ? 'done' : '';
+  const pillClass = item.type==='concept'?'pill-concept':item.type==='both'?'pill-both':'pill-problem';
+  const pillLabel = item.type==='concept'?'📺 Watch':item.type==='both'?'📺+💻 Both':'💻 Solve';
+  return `<div class="item-row ${isDone}">
+    <input type="checkbox" ${completed[key]?'checked':''} onchange="toggleTask('${key}',this)">
+    <span class="tag-pill ${pillClass}">${pillLabel}</span>
+    <span class="item-text">V${item.num}: ${item.title}</span>
+  </div>`;
+}
+
+function renderDayCard(d) {
+  const done = countDayDone(d);
+  const total = getDayTasks(d).length;
+  const isComplete = done === total && total > 0;
+
+  // filter
+  if(currentFilter === 'done') {
+    if(done === 0) return '';
+  } else if(currentFilter === 'pending') {
+    if(done === total && total > 0) return '';
+  }
+
+  let html = `<div class="day-card ${d.weekend?'weekend':''} ${isComplete?'completed-card':''}" id="daycard-${d.day}">
+    <div class="day-header" onclick="toggleDay(${d.day})">
+      <div class="day-num-row">
+        <span class="day-num">DAY ${String(d.day).padStart(2,'0')}</span>
+        <span class="day-title">${d.dayName} ${isComplete ? '✓' : ''}</span>
+      </div>
+      <div class="day-meta">
+        ${d.weekend?'<span class="weekend-pill">Weekend</span>':''}
+        <span class="day-progress-mini" id="daymeta-${d.day}">${done}/${total}</span>
+        <span class="chevron" id="chevron-${d.day}">▼</span>
+      </div>
+    </div>
+    <div class="day-body" id="daybody-${d.day}">`;
+
+  // DSA
+  if(d.dsa) {
+    html += `<div class="agent-section">
+      <div class="agent-header">
+        <div class="agent-dot" style="background:var(--cyan)"></div>
+        <span class="agent-label" style="color:var(--cyan)">DSA — Striver A2Z</span>
+      </div>`;
+    if(d.dsa.watch?.length) {
+      html += `<div class="section-sublabel">Watch first:</div>`;
+      d.dsa.watch.forEach((w,i) => { html += watchRow(w, `d${d.day}_w_${i}`); });
+    }
+    if(d.dsa.solve?.length) {
+      html += `<div class="section-sublabel" style="margin-top:8px">Then solve:</div>`;
+      d.dsa.solve.forEach((p,i) => { html += problemRow(p, `d${d.day}_s_${i}`); });
+    }
+    html += `</div>`;
+  }
+
+  // CS
+  if(d.cs) {
+    const isDone = completed[`d${d.day}_cs_0`] ? 'done' : '';
+    html += `<div class="agent-section">
+      <div class="agent-header">
+        <div class="agent-dot" style="background:var(--green)"></div>
+        <span class="agent-label" style="color:var(--green)">CS Core — ${d.cs.sub}</span>
+      </div>
+      <div class="cs-box">
+        <div class="cs-subject"><a href="${d.cs.url}" target="_blank" rel="noopener">${d.cs.topic}</a></div>
+        <div class="cs-pts">${d.cs.pts}</div>
+      </div>
+      <div class="item-row ${isDone}" style="margin-top:8px">
+        <input type="checkbox" ${completed[`d${d.day}_cs_0`]?'checked':''} onchange="toggleTask('d${d.day}_cs_0',this)">
+        <span class="item-text" style="color:var(--muted)">Mark CS topic as studied</span>
+      </div>
+    </div>`;
+  }
+
+  // LLD
+  if(d.lld) {
+    const key = `d${d.day}_lld_0`;
+    const isDone = completed[key] ? 'done' : '';
+    const pillCls = d.lld.type==='code'?'pill-problem':d.lld.type==='both'?'pill-both':'pill-concept';
+    const pillLbl = d.lld.type==='code'?'💻 Code':d.lld.type==='both'?'📺+💻 Both':'📺 Concept';
+    html += `<div class="agent-section">
+      <div class="agent-header">
+        <div class="agent-dot" style="background:var(--orange)"></div>
+        <span class="agent-label" style="color:var(--orange)">LLD — TUF+</span>
+      </div>
+      <div class="item-row ${isDone}">
+        <input type="checkbox" ${completed[key]?'checked':''} onchange="toggleTask('${key}',this)">
+        <span class="tag-pill ${pillCls}">${pillLbl}</span>
+        <a class="item-link" href="${d.lld.url}" target="_blank" rel="noopener">${d.lld.topic}</a>
+      </div>
+    </div>`;
+  }
+
+  // Practice
+  if(d.practice?.length) {
+    html += `<div class="agent-section">
+      <div class="agent-header">
+        <div class="agent-dot" style="background:var(--red)"></div>
+        <span class="agent-label" style="color:var(--red)">Daily LeetCode</span>
+      </div>`;
+    d.practice.forEach((p,i) => { html += problemRow(p, `d${d.day}_p_${i}`); });
+    html += `</div>`;
+  }
+
+  html += `</div></div>`;
+  return html;
+}
+
+window.toggleDay = function(dayNum) {
+  const body = document.getElementById(`daybody-${dayNum}`);
+  const chev = document.getElementById(`chevron-${dayNum}`);
+  const open = body.classList.toggle('open');
+  chev.classList.toggle('open', open);
+};
+
+function renderWeek(weekNum) {
+  currentWeek = weekNum;
+  const wdays = days.filter(d=>d.week===weekNum);
+  const themeEl = document.getElementById('week-theme-box');
+  themeEl.innerHTML = `<strong>${weekThemeNames[weekNum]||'Final Sprint'}:</strong> ${weekThemes[weekNum-1]||'Weak Areas · Revision · Mock Interviews'}`;
+
+  const grid = document.getElementById('days-grid');
+  grid.innerHTML = wdays.map(d=>renderDayCard(d)).join('');
+
+  document.querySelectorAll('.wtab').forEach(t=>{
+    t.classList.toggle('active', parseInt(t.dataset.week)===weekNum);
+  });
+}
+
+window.resetAll = function() {
+  if(!confirm('Reset all progress? This cannot be undone.')) return;
+  completed = {};
+  save();
+  renderWeek(currentWeek);
+  updateStats();
+  showToast('Progress reset.');
+};
+
+// ── INIT ──────────────────────────────────────────────────────────────
+function init() {
+  load();
+  totalTasks = countAllTasks();
+
+  // Build week tabs
+  const tabsEl = document.getElementById('week-tabs');
+  [1,2,3,4,5,6,7,8,9].forEach(w=>{
+    const wdays = days.filter(d=>d.week===w);
+    if(!wdays.length) return;
+    const done = wdays.reduce((s,d)=>s+countDayDone(d),0);
+    const total = wdays.reduce((s,d)=>s+getDayTasks(d).length,0);
+    const pct = total ? Math.round(done/total*100) : 0;
+    const btn = document.createElement('button');
+    btn.className = 'wtab';
+    btn.dataset.week = w;
+    btn.textContent = (weekThemeNames[w]||'Sprint') + (pct>0?` ${pct}%`:'');
+    btn.onclick = ()=>renderWeek(w);
+    tabsEl.appendChild(btn);
+  });
+
+  renderWeek(1);
+  updateStats();
+
+  if(document.getElementById('last-saved').textContent === 'never') {
+    try {
+      if(localStorage.getItem(STORAGE_KEY)) {
+        document.getElementById('last-saved').textContent = 'loaded from storage';
+      }
+    } catch(e){}
+  }
+}
+
+init();
+</script>
+</body>
+</html>
