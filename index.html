@@ -3,993 +3,1648 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60-Day MAANG Grind | Premium Tracker</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>60-Day Study Marathon</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-base: #000000;
-            --bg-card: #0a0a0a;
-            --border-subtle: #222222;
-            --border-hover: #444444;
-            --text-primary: #ededed;
-            --text-secondary: #a1a1aa;
-            --accent: #ffffff;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #13131a;
+            --bg-card: #1a1a24;
+            --bg-card-hover: #1f1f2e;
+            --accent-primary: #ff6b35;
+            --accent-secondary: #f7931e;
+            --accent-tertiary: #ffd23f;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b8;
+            --text-muted: #6b6b85;
+            --border-color: #2a2a3a;
+            --success: #4ade80;
+            --morning: #ff6b35;
+            --night: #8b5cf6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            margin: 0;
-            padding: 3rem 2rem;
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-base);
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-            background-image: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.05) 0%, transparent 60%);
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1200px;
+        .app-container {
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 2rem;
         }
 
         .header {
+            text-align: center;
             margin-bottom: 3rem;
-            border-bottom: 1px solid var(--border-subtle);
-            padding-bottom: 2rem;
+            padding: 3rem 0;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 24px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .header h1 {
-            font-size: 1.8rem;
-            font-weight: 600;
-            margin: 0 0 0.5rem 0;
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
             letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
-        .header p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin: 0;
-        }
-
-        .week-section {
-            margin-bottom: 4rem;
-        }
-
-        .week-header {
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            align-items: baseline;
-            gap: 1rem;
-        }
-
-        .week-header h2 {
+        .subtitle {
             font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin: 0;
-            letter-spacing: -0.01em;
+            opacity: 0.95;
+            font-weight: 500;
         }
 
-        .week-header span {
-            font-size: 0.85rem;
+        .progress-section {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .progress-card {
+            flex: 1;
+            min-width: 200px;
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .progress-card:hover {
+            background: var(--bg-card-hover);
+            transform: translateY(-2px);
+            border-color: var(--accent-primary);
+        }
+
+        .progress-label {
+            font-size: 0.875rem;
             color: var(--text-secondary);
-            font-weight: 400;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .grid-container {
+        .progress-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .week-nav {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .week-nav::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .week-nav::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .week-nav::-webkit-scrollbar-thumb {
+            background: var(--accent-primary);
+            border-radius: 4px;
+        }
+
+        .week-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .week-btn:hover {
+            background: var(--bg-card-hover);
+            border-color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        .week-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-color: var(--accent-primary);
+            box-shadow: 0 8px 24px rgba(255, 107, 53, 0.4);
+        }
+
+        .days-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.5rem;
+            margin-bottom: 2rem;
         }
 
         .day-card {
             background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
             padding: 1.5rem;
-            transition: border-color 0.2s ease, transform 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--morning), var(--night));
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .day-card:hover {
-            border-color: var(--border-hover);
-            transform: translateY(-2px);
+            background: var(--bg-card-hover);
+            border-color: var(--accent-primary);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(255, 107, 53, 0.2);
+        }
+
+        .day-card:hover::before {
+            opacity: 1;
+        }
+
+        .day-card.today {
+            border-color: var(--accent-primary);
+            background: linear-gradient(135deg, var(--bg-card), var(--bg-card-hover));
+            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.3);
+        }
+
+        .day-card.today::after {
+            content: 'TODAY';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
         }
 
         .day-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            margin-bottom: 1rem;
         }
 
         .day-number {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--accent);
-            background: #1a1a1a;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid #333;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-tertiary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .day-date {
+            font-size: 0.875rem;
             color: var(--text-secondary);
-            font-size: 0.85rem;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .section {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .section-title {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #71717a;
-            font-weight: 600;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
-        }
-
-        li {
-            font-size: 0.9rem;
-            color: #d4d4d8;
-            line-height: 1.4;
-            display: flex;
-            align-items: flex-start;
-            gap: 8px;
-        }
-
-        li::before {
-            content: '—';
-            color: #555;
-        }
-
-        .problem-link {
-            color: var(--text-primary);
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: opacity 0.2s;
-        }
-
-        .problem-link:hover {
-            opacity: 0.7;
-        }
-
-        .difficulty {
-            font-size: 0.65rem;
-            padding: 2px 6px;
-            border-radius: 3px;
             font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
         }
 
-        .diff-easy { background: rgba(34, 197, 94, 0.1); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.2); }
-        .diff-medium { background: rgba(234, 179, 8, 0.1); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.2); }
-        .diff-hard { background: rgba(239, 68, 68, 0.1); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .session {
+            margin-bottom: 1rem;
+        }
 
-        .notes-section {
-            margin-top: auto;
-            padding-top: 1rem;
-            border-top: 1px dashed var(--border-subtle);
-            font-size: 0.8rem;
-            color: #888;
-            font-style: italic;
+        .session:last-child {
+            margin-bottom: 0;
+        }
+
+        .session-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .session-icon {
+            font-size: 1rem;
+        }
+
+        .session-time {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .session-subject {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .session.morning .session-subject {
+            color: var(--morning);
+        }
+
+        .session.night .session-subject {
+            color: var(--night);
+        }
+
+        .topics-list {
+            margin-top: 0.75rem;
+        }
+
+        .topic-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            margin-bottom: 0.4rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .topic-item:hover {
+            background: var(--border-color);
+            transform: translateX(4px);
+        }
+
+        .topic-title {
+            flex: 1;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .topic-duration {
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            background: var(--bg-card);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+        }
+
+        .topics-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        .expand-btn {
+            margin-top: 0.75rem;
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .expand-btn:hover {
+            background: var(--border-color);
+            color: var(--text-primary);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 4rem;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .days-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .week-nav {
+                flex-wrap: nowrap;
+            }
+
+            .app-container {
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
+    <div id="root"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>Sumeet's Final Boss Grind</h1>
-            <p>60 Days • DSA + LLD + OS + CN + DBMS • Exact Roadmap</p>
-        </div>
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
 
-        <div id="timeline">
-            </div>
-    </div>
-
-    <script>
-        const scheduleData = [
+        const scheduleData = {
+  "schedule": [
     {
-      "week": 1,
-      "week_type": "Short Week (Wednesday - Sunday)",
-      "days": [
-        {
-          "day": 1,
-          "date": "2026-04-08",
-          "dsa_lectures": ["Video 1: Don't watch my A2Z DSA Course", "Video 2: How to setup VS code for DSA and CP", "Video 3: C++ Basics in One Shot - L1", "Video 4: Time and Space Complexity"],
-          "other_subject": "DBMS (TUF+): Introduction to DBMS - Data, Information & Database, Types of Databases, DBMS Architecture",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Two Sum", "link": "https://leetcode.com/problems/two-sum/"},
-            {"difficulty": "Medium", "problem": "Best Time to Buy and Sell Stock", "link": "https://leetcode.com/problems/best-time-to-buy-and-sell-stock/"}
-          ],
-          "notes": "Day 1 - Basics strong karo. Google style start."
-        },
-        {
-          "day": 2,
-          "date": "2026-04-09",
-          "dsa_lectures": ["Video 6: Complete C++ STL in 1 Video", "Video 7: Basic Maths for DSA - Euclidean Algorithm"],
-          "other_subject": "DBMS (TUF+): Data Models and ER Models - ER Diagram, Relationships, Relational Model",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Valid Palindrome", "link": "https://leetcode.com/problems/valid-palindrome/"},
-            {"difficulty": "Medium", "problem": "3Sum", "link": "https://leetcode.com/problems/3sum/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 3,
-          "date": "2026-04-10",
-          "dsa_lectures": ["Video 8: Re 1. Introduction to Recursion", "Video 9: Re 2. Problems on Recursion", "Video 10: Re 3. Parameterised and Functional Recursion", "Video 11: Re 4. Problems on Functional Recursion", "Video 12: Re 5. Multiple Recursion Calls"],
-          "other_subject": "DBMS (TUF+): Relational Model and Normalization - Keys, Functional Dependency, Armstrong's Axioms",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Fibonacci Number", "link": "https://leetcode.com/problems/fibonacci-number/"},
-            {"difficulty": "Medium", "problem": "Climbing Stairs", "link": "https://leetcode.com/problems/climbing-stairs/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 4,
-          "date": "2026-04-11",
-          "dsa_lectures": ["Video 14: Sorting - Part 1 (Selection, Bubble, Insertion)", "Video 15: Merge Sort", "Video 16: Quick Sort"],
-          "other_subject": "DBMS (TUF+): SQL and Query Optimization - SQL Joins, Subqueries, Query Processing",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Sort Colors", "link": "https://leetcode.com/problems/sort-colors/"},
-            {"difficulty": "Medium", "problem": "Merge Intervals", "link": "https://leetcode.com/problems/merge-intervals/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 5,
-          "date": "2026-04-12",
-          "dsa_lectures": ["Video 17: Arrays Intro - Second Largest, Remove Duplicates", "Video 18: Rotate Array, Union Intersection", "Video 19: Find element once, Max Consecutive 1s", "Video 20: Longest Subarray with sum K"],
-          "other_subject": "DBMS (TUF+): NoSQL Databases - BASE Properties, Graph Databases, Sharding",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Remove Duplicates from Sorted Array", "link": "https://leetcode.com/problems/remove-duplicates-from-sorted-array/"},
-            {"difficulty": "Medium", "problem": "Rotate Array", "link": "https://leetcode.com/problems/rotate-array/"}
-          ],
-          "notes": ""
-        }
-      ]
+      "day": "D1",
+      "date": "10 Apr 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Instructor's Note", "duration": "2:22" },
+          { "title": "Introduction", "duration": "13:22" },
+          { "title": "Arrays Basics", "duration": "6:23" },
+          { "title": "Practice : Arrays Basics", "duration": "13:37" },
+          { "title": "Structures", "duration": "18:26" },
+          { "title": "Practice : Structures", "duration": "10:49" },
+          { "title": "Pointers", "duration": "11:01" },
+          { "title": "Practice : Pointers", "duration": "14:41" },
+          { "title": "Reference in C++", "duration": "3:56" },
+          { "title": "Practice : Reference", "duration": "5:15" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 1: What is an Operating System? + 2 LC Easy"
+      }
     },
     {
-      "week": 2,
-      "week_type": "Full Week (Monday - Sunday)",
-      "days": [
-        {
-          "day": 6,
-          "date": "2026-04-13",
-          "dsa_lectures": ["Video 21: 2 Sum Problem", "Video 22: Sort 0s 1s 2s", "Video 23: Majority Element", "Video 24: Kadane's Algorithm"],
-          "other_subject": "DBMS (TUF+): Transactions and Concurrency - ACID, CAP Theorem, Locking Protocols",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Maximum Subarray", "link": "https://leetcode.com/problems/maximum-subarray/"},
-            {"difficulty": "Medium", "problem": "Sort Colors (0,1,2)", "link": "https://leetcode.com/problems/sort-colors/"}
-          ],
-          "notes": "Saturday - Weekend: 5 questions (upar wale + 3 extra Arrays topic se)"
-        },
-        {
-          "day": 7,
-          "date": "2026-04-14",
-          "dsa_lectures": ["Video 25: Rearrange Array by Sign", "Video 26: Next Permutation", "Video 27: Leaders in Array", "Video 28: Longest Consecutive Sequence"],
-          "other_subject": "DBMS (TUF+): Recovery, Backup, Indexing, B+ Trees",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Next Permutation", "link": "https://leetcode.com/problems/next-permutation/"},
-            {"difficulty": "Medium", "problem": "Longest Consecutive Sequence", "link": "https://leetcode.com/problems/longest-consecutive-sequence/"}
-          ],
-          "notes": "Sunday - Weekend: 5 questions"
-        },
-        {
-          "day": 8,
-          "date": "2026-04-15",
-          "dsa_lectures": ["Video 29: Longest Consecutive Sequence (Google)", "Video 30: Set Matrix Zeroes", "Video 31: Rotate Matrix 90 Degrees"],
-          "other_subject": "DBMS (TUF+): Indexing and Performance Tuning + Security and Access Control",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Set Matrix Zeroes", "link": "https://leetcode.com/problems/set-matrix-zeroes/"},
-            {"difficulty": "Medium", "problem": "Spiral Matrix", "link": "https://leetcode.com/problems/spiral-matrix/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 9,
-          "date": "2026-04-16",
-          "dsa_lectures": ["Video 32: Spiral Matrix", "Video 33: Count Subarray sum Equals K", "Video 34: Pascal Triangle"],
-          "other_subject": "DBMS (TUF+): Scalability, Big Data, Data Warehousing",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Pascal's Triangle", "link": "https://leetcode.com/problems/pascals-triangle/"},
-            {"difficulty": "Medium", "problem": "Subarray Sum Equals K", "link": "https://leetcode.com/problems/subarray-sum-equals-k/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 10,
-          "date": "2026-04-17",
-          "dsa_lectures": ["Video 35: Majority Element II", "Video 36: 4 Sum", "Video 37: 4 Sum Google"],
-          "other_subject": "DBMS (TUF+): Full Revision + Quiz all modules",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Majority Element II", "link": "https://leetcode.com/problems/majority-element-ii/"},
-            {"difficulty": "Medium", "problem": "4Sum", "link": "https://leetcode.com/problems/4sum/"}
-          ],
-          "notes": "DBMS almost done"
-        },
-        {
-          "day": 11,
-          "date": "2026-04-18",
-          "dsa_lectures": ["Video 38: Number of Subarrays with XOR K", "Video 39: Merge Overlapping Intervals", "Video 40: Merge Two Sorted Arrays"],
-          "other_subject": "DBMS (TUF+): Final Revision + Practice SQL Queries",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Merge Intervals", "link": "https://leetcode.com/problems/merge-intervals/"},
-            {"difficulty": "Medium", "problem": "Count Subarrays with XOR K", "link": "https://leetcode.com/problems/subarray-sum-equals-k/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 12,
-          "date": "2026-04-19",
-          "dsa_lectures": ["Video 41: Find Missing and Repeating", "Video 42: Count Inversions", "Video 43: Reverse Pairs"],
-          "other_subject": "DBMS (TUF+): Complete - All modules finished",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Find the Duplicate Number", "link": "https://leetcode.com/problems/find-the-duplicate-number/"},
-            {"difficulty": "Medium", "problem": "Count Inversions (GFG)", "link": "https://www.geeksforgeeks.org/problems/inversion-of-array-1587115620/1"}
-          ],
-          "notes": "Sunday - Weekend: 5 questions + DBMS done!"
-        }
-      ]
+      "day": "D2",
+      "date": "11 Apr 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Pointer to Structure", "duration": "6:03" },
+          { "title": "Practice : Pointer to Structure", "duration": "6:44" },
+          { "title": "Functions", "duration": "12:19" },
+          { "title": "Practice : Functions", "duration": "5:37" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 2: Types of Operating Systems + Code practice"
+      }
     },
     {
-      "week": 3,
-      "week_type": "Full Week (Monday - Sunday)",
-      "days": [
-        {
-          "day": 13,
-          "date": "2026-04-20",
-          "dsa_lectures": ["Video 44: Maximum Product Subarray", "Video 45: BS-1. Binary Search Introduction", "Video 46: BS-2. Lower & Upper Bound"],
-          "other_subject": "LLD (TUF+): Introduction to LLD + SOLID Principles (SRP, OCP, LSP)",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Binary Search", "link": "https://leetcode.com/problems/binary-search/"},
-            {"difficulty": "Medium", "problem": "Search Insert Position", "link": "https://leetcode.com/problems/search-insert-position/"}
-          ],
-          "notes": "LLD block shuru!"
-        },
-        {
-          "day": 14,
-          "date": "2026-04-21",
-          "dsa_lectures": ["Video 47: BS-3. First & Last Occurrences", "Video 48: BS-4. Search in Rotated Sorted Array I", "Video 49: BS-5. Search in Rotated Sorted Array II"],
-          "other_subject": "LLD (TUF+): UML + Class Diagrams + Creational Patterns (Singleton, Factory)",
-          "questions": [
-            {"difficulty": "Easy", "problem": "First Bad Version", "link": "https://leetcode.com/problems/first-bad-version/"},
-            {"difficulty": "Medium", "problem": "Search in Rotated Sorted Array", "link": "https://leetcode.com/problems/search-in-rotated-sorted-array/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 15,
-          "date": "2026-04-22",
-          "dsa_lectures": ["Video 50: BS-6. Minimum in Rotated Sorted Array", "Video 52: BS-8. Single Element in Sorted Array", "Video 53: BS-9. Find Peak Element"],
-          "other_subject": "LLD (TUF+): Structural Patterns (Adapter, Decorator, Facade)",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Find Peak Element", "link": "https://leetcode.com/problems/find-peak-element/"},
-            {"difficulty": "Medium", "problem": "Search a 2D Matrix", "link": "https://leetcode.com/problems/search-a-2d-matrix/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 16,
-          "date": "2026-04-23",
-          "dsa_lectures": ["Video 54: BS-10. Square Root using Binary Search", "Video 55: BS-11. Nth Root", "Video 73: L1. Introduction to Trees"],
-          "other_subject": "LLD (TUF+): Behavioural Patterns (Observer, Strategy, Command)",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Sqrt(x)", "link": "https://leetcode.com/problems/sqrtx/"},
-            {"difficulty": "Medium", "problem": "Koko Eating Bananas", "link": "https://leetcode.com/problems/koko-eating-bananas/"}
-          ],
-          "notes": "Saturday - Weekend: 5 questions"
-        },
-        {
-          "day": 17,
-          "date": "2026-04-24",
-          "dsa_lectures": ["Video 74: L3. Binary Tree Representation", "Video 75: L4. Tree Traversals (BFS/DFS)", "Video 76: L5. Preorder Traversal"],
-          "other_subject": "LLD (TUF+): Multithreading, Concurrency, Thread Safety",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Maximum Depth of Binary Tree", "link": "https://leetcode.com/problems/maximum-depth-of-binary-tree/"},
-            {"difficulty": "Medium", "problem": "Same Tree", "link": "https://leetcode.com/problems/same-tree/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 18,
-          "date": "2026-04-25",
-          "dsa_lectures": ["Video 77: L6. Inorder Traversal", "Video 78: L7. Postorder Traversal", "Video 79: L8. Level Order Traversal"],
-          "other_subject": "LLD (TUF+): Dependency Injection, Exception Handling",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Symmetric Tree", "link": "https://leetcode.com/problems/symmetric-tree/"},
-            {"difficulty": "Medium", "problem": "Binary Tree Level Order Traversal", "link": "https://leetcode.com/problems/binary-tree-level-order-traversal/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 19,
-          "date": "2026-04-26",
-          "dsa_lectures": ["Video 80: L9. Iterative Preorder", "Video 81: L10. Iterative Inorder", "Video 82: L11. Iterative Postorder"],
-          "other_subject": "LLD (TUF+): Best Practices - API Design, Database Integration",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Invert Binary Tree", "link": "https://leetcode.com/problems/invert-binary-tree/"},
-            {"difficulty": "Medium", "problem": "Construct Binary Tree from Preorder and Inorder", "link": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/"}
-          ],
-          "notes": ""
-        }
-      ]
+      "day": "D3",
+      "date": "12 Apr 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Parameter Passing Methods", "duration": "14:03" },
+          { "title": "Practice : Parameter Passing Methods", "duration": "11:20" },
+          { "title": "Array as Parameter", "duration": "7:27" },
+          { "title": "Practice : Array as Parameter", "duration": "13:35" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 3: Multi-Tasking vs Multi-Threading"
+      }
     },
     {
-      "week": 4,
-      "week_type": "Full Week (Monday - Sunday)",
-      "days": [
-        {
-          "day": 20,
-          "date": "2026-04-27",
-          "dsa_lectures": ["Video 83: L12. Iterative Postorder 1 Stack", "Video 84: L13. Pre In Post in One Code", "Video 85: L14. Maximum Depth"],
-          "other_subject": "LLD (TUF+): Interview Problems - Parking Lot Design + Code",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Diameter of Binary Tree", "link": "https://leetcode.com/problems/diameter-of-binary-tree/"},
-            {"difficulty": "Medium", "problem": "Balanced Binary Tree", "link": "https://leetcode.com/problems/balanced-binary-tree/"}
-          ],
-          "notes": "Sunday - Weekend: 5 questions"
-        },
-        {
-          "day": 21,
-          "date": "2026-04-28",
-          "dsa_lectures": ["Video 86: L15. Check Balanced", "Video 87: L16. Diameter", "Video 88: L18. Identical Trees"],
-          "other_subject": "LLD (TUF+): Logging Framework Design + Code",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Lowest Common Ancestor", "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/"},
-            {"difficulty": "Medium", "problem": "Path Sum", "link": "https://leetcode.com/problems/path-sum/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 22,
-          "date": "2026-04-29",
-          "dsa_lectures": ["Video 89: L19. Zig-Zag Traversal", "Video 90: L20. Boundary Traversal", "Video 91: L21. Vertical Order"],
-          "other_subject": "LLD (TUF+): Traffic Signal System + Vending Machine Design",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Binary Tree Zigzag Level Order", "link": "https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/"},
-            {"difficulty": "Medium", "problem": "Vertical Order Traversal", "link": "https://leetcode.com/problems/vertical-order-traversal-of-a-binary-tree/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 23,
-          "date": "2026-04-30",
-          "dsa_lectures": ["Video 92: L22. Top View", "Video 93: L23. Bottom View", "Video 94: L24. Right/Left View"],
-          "other_subject": "LLD (TUF+): Task Management System Design + Code",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Binary Tree Right Side View", "link": "https://leetcode.com/problems/binary-tree-right-side-view/"},
-            {"difficulty": "Medium", "problem": "Top View of Binary Tree (GFG)", "link": "https://www.geeksforgeeks.org/problems/top-view-of-binary-tree/1"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 24,
-          "date": "2026-05-01",
-          "dsa_lectures": ["Video 95: L26. Print Root to Node Path", "Video 96: L27. Lowest Common Ancestor", "Video 97: L28. Maximum Width"],
-          "other_subject": "LLD (TUF+): Full Revision + How to approach LLD Interview",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Lowest Common Ancestor of a Binary Tree", "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/"},
-            {"difficulty": "Medium", "problem": "Binary Tree Maximum Path Sum", "link": "https://leetcode.com/problems/binary-tree-maximum-path-sum/"}
-          ],
-          "notes": "Saturday - Weekend: 5 questions"
-        },
-        {
-          "day": 25,
-          "date": "2026-05-02",
-          "dsa_lectures": ["Video 98: L29. Children Sum Property", "Video 99: L30. Nodes at Distance K", "Video 100: L31. Burn Binary Tree"],
-          "other_subject": "LLD (TUF+): Complete - All patterns + problems done",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Sum Root to Leaf Numbers", "link": "https://leetcode.com/problems/sum-root-to-leaf-numbers/"},
-            {"difficulty": "Medium", "problem": "Binary Tree Cameras", "link": "https://leetcode.com/problems/binary-tree-cameras/"}
-          ],
-          "notes": "Sunday - Weekend: 5 questions. LLD done!"
-        },
-        {
-          "day": 26,
-          "date": "2026-05-03",
-          "dsa_lectures": ["Video 101: L32. Count Nodes in Complete Tree", "Video 102: L33. Unique Binary Tree", "Video 103: L34. Construct from Preorder Inorder"],
-          "other_subject": "OS (LoveBabbar): Introduction to Operating System, Process vs Thread",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Serialize and Deserialize Binary Tree", "link": "https://leetcode.com/problems/serialize-and-deserialize-binary-tree/"},
-            {"difficulty": "Medium", "problem": "Construct Binary Tree from Preorder and Postorder", "link": "https://leetcode.com/problems/construct-binary-tree-from-preorder-and-postorder-traversal/"}
-          ],
-          "notes": "OS block start (LoveBabbar playlist)"
-        }
-      ]
+      "day": "D4",
+      "date": "13 Apr 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Structure as Parameter", "duration": "10:32" },
+          { "title": "Practice : Structure as Parameter", "duration": "11:05" },
+          { "title": "Structures and Functions (Must Watch)", "duration": "5:15" },
+          { "title": "Converting a C program to a C++ class (Must Watch)", "duration": "9:28" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 4: System Calls"
+      }
     },
     {
-      "week": 5,
-      "week_type": "Full Week (Monday - Sunday)",
-      "days": [
-        {
-          "day": 27,
-          "date": "2026-05-04",
-          "dsa_lectures": ["Video 104: L35. Construct from Postorder Inorder", "Video 105: L36. Serialize Deserialize", "Video 106: L37. Morris Traversal"],
-          "other_subject": "OS (LoveBabbar): CPU Scheduling Algorithms",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Morris Traversal (GFG)", "link": "https://www.geeksforgeeks.org/problems/morris-traversal/1"},
-            {"difficulty": "Medium", "problem": "Flatten Binary Tree to Linked List", "link": "https://leetcode.com/problems/flatten-binary-tree-to-linked-list/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 28,
-          "date": "2026-05-05",
-          "dsa_lectures": ["Video 107: L38. Flatten to Linked List", "Video 108: L39. BST Introduction", "Video 109: L41. Ceil in BST"],
-          "other_subject": "OS (LoveBabbar): Deadlock, Prevention, Banker's Algorithm",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Validate Binary Search Tree", "link": "https://leetcode.com/problems/validate-binary-search-tree/"},
-            {"difficulty": "Medium", "problem": "Kth Smallest Element in a BST", "link": "https://leetcode.com/problems/kth-smallest-element-in-a-bst/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 29,
-          "date": "2026-05-06",
-          "dsa_lectures": ["Video 110: L42. Floor in BST", "Video 111: L43. Insert Node in BST", "Video 112: L44. Delete Node in BST"],
-          "other_subject": "OS (LoveBabbar): Memory Management, Paging, Segmentation",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Search in a Binary Search Tree", "link": "https://leetcode.com/problems/search-in-a-binary-search-tree/"},
-            {"difficulty": "Medium", "problem": "Recover Binary Search Tree", "link": "https://leetcode.com/problems/recover-binary-search-tree/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 30,
-          "date": "2026-05-07",
-          "dsa_lectures": ["Video 113: L45. Kth Smallest in BST", "Video 114: L46. Validate BST", "Video 115: L47. LCA in BST"],
-          "other_subject": "OS (LoveBabbar): File Systems, Disk Scheduling",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Lowest Common Ancestor in BST", "link": "https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/"},
-            {"difficulty": "Medium", "problem": "Binary Search Tree Iterator", "link": "https://leetcode.com/problems/binary-search-tree-iterator/"}
-          ],
-          "notes": "Saturday - Weekend: 5 questions"
-        },
-        {
-          "day": 31,
-          "date": "2026-05-08",
-          "dsa_lectures": ["Video 116: L49. Inorder Successor/Predecessor", "Video 117: L50. BST Iterator", "Video 118: L51. Two Sum in BST"],
-          "other_subject": "OS (LoveBabbar): Synchronization, Semaphores, Monitors",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Two Sum IV - Input is a BST", "link": "https://leetcode.com/problems/two-sum-iv-input-is-a-bst/"},
-            {"difficulty": "Medium", "problem": "Delete Node in a BST", "link": "https://leetcode.com/problems/delete-node-in-a-bst/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 32,
-          "date": "2026-05-09",
-          "dsa_lectures": ["Video 119: L52. Recover BST", "Video 120: L53. Largest BST", "Video 126: G-1. Introduction to Graph"],
-          "other_subject": "OS (LoveBabbar): Full Revision + Practice Problems",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Number of Provinces", "link": "https://leetcode.com/problems/number-of-provinces/"},
-            {"difficulty": "Medium", "problem": "Graph Valid Tree (GFG)", "link": "https://www.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1"}
-          ],
-          "notes": "Sunday - Weekend: 5 questions. OS done!"
-        },
-        {
-          "day": 33,
-          "date": "2026-05-10",
-          "dsa_lectures": ["Video 127: G-3. Graph Representation", "Video 128: G-4. Connected Components", "Video 129: G-5. BFS"],
-          "other_subject": "CN (TUF+): Introduction to Computer Networks, OSI Model, TCP/IP Model",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Number of Islands", "link": "https://leetcode.com/problems/number-of-islands/"},
-            {"difficulty": "Medium", "problem": "Flood Fill", "link": "https://leetcode.com/problems/flood-fill/"}
-          ],
-          "notes": "CN block start"
-        }
-      ]
+      "day": "D5",
+      "date": "14 Apr 2026 (Tue)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Practice : Monolithic Program", "duration": "4:50" },
+          { "title": "Practice : Modular Program", "duration": "5:10" },
+          { "title": "Practice : Structure and Functions", "duration": "5:09" },
+          { "title": "Practice : Object-Oriented Program", "duration": "6:16" },
+          { "title": "C++ Class and Constructor", "duration": "9:52" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 5: How OS Boots up?"
+      }
     },
     {
-      "week": 6,
-      "week_type": "Full Week (Monday - Sunday)",
-      "days": [
-        {
-          "day": 34,
-          "date": "2026-05-11",
-          "dsa_lectures": ["Video 130: G-6. DFS", "Video 131: G-7. Number of Provinces", "Video 132: G-8. Number of Islands"],
-          "other_subject": "CN (TUF+): IP Addressing, Subnetting, NAT, DHCP, DNS",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Rotten Oranges", "link": "https://leetcode.com/problems/rotting-oranges/"},
-            {"difficulty": "Medium", "problem": "Surrounded Regions", "link": "https://leetcode.com/problems/surrounded-regions/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 35,
-          "date": "2026-05-12",
-          "dsa_lectures": ["Video 133: G-10. Rotten Oranges", "Video 134: G-11. Detect Cycle BFS", "Video 135: G-12. Detect Cycle DFS"],
-          "other_subject": "CN (TUF+): Routing Algorithms, Distance Vector, Link State",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Detect Cycle in Undirected Graph (GFG)", "link": "https://www.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1"},
-            {"difficulty": "Medium", "problem": "Number of Enclaves", "link": "https://leetcode.com/problems/number-of-enclaves/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 36,
-          "date": "2026-05-13",
-          "dsa_lectures": ["Video 136: G-13. 0/1 Matrix Distance", "Video 137: G-14. Surrounded Regions", "Video 138: G-15. Number of Enclaves"],
-          "other_subject": "CN (TUF+): Ethernet, Wireless, VLANs, Spanning Tree",
-          "questions": [
-            {"difficulty": "Easy", "problem": "01 Matrix", "link": "https://leetcode.com/problems/01-matrix/"},
-            {"difficulty": "Medium", "problem": "Bipartite Graph", "link": "https://leetcode.com/problems/is-graph-bipartite/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 37,
-          "date": "2026-05-14",
-          "dsa_lectures": ["Video 139: G-16. Number of Distinct Islands", "Video 140: G-17. Bipartite Graph BFS", "Video 141: G-18. Bipartite Graph DFS"],
-          "other_subject": "CN (TUF+): Network Security, Firewall, VPN, Cryptography",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Detect Cycle in Directed Graph (GFG)", "link": "https://www.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1"},
-            {"difficulty": "Medium", "problem": "Topological Sort", "link": "https://leetcode.com/problems/course-schedule/"}
-          ],
-          "notes": "Saturday - Weekend: 5 questions"
-        },
-        {
-          "day": 38,
-          "date": "2026-05-15",
-          "dsa_lectures": ["Video 142: G-19. Detect Cycle Directed DFS", "Video 143: G-20. Eventual Safe States", "Video 144: G-21. Topological Sort"],
-          "other_subject": "CN (TUF+): QoS, Traffic Management, Load Balancing, CDN",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Kahn's Algorithm (GFG)", "link": "https://www.geeksforgeeks.org/problems/topological-sort/1"},
-            {"difficulty": "Medium", "problem": "Alien Dictionary", "link": "https://leetcode.com/problems/alien-dictionary/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 39,
-          "date": "2026-05-16",
-          "dsa_lectures": ["Video 145: G-22. Kahn's Algorithm", "Video 146: G-23. Detect Cycle Topological", "Video 147: G-25. Shortest Path BFS"],
-          "other_subject": "CN (TUF+): Advanced Concepts - SDN, Network Virtualization, Full Revision",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Word Ladder", "link": "https://leetcode.com/problems/word-ladder/"},
-            {"difficulty": "Medium", "problem": "Shortest Path in Binary Maze (GFG)", "link": "https://www.geeksforgeeks.org/problems/shortest-path-in-a-binary-maze-1655757/1"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 40,
-          "date": "2026-05-17",
-          "dsa_lectures": ["Video 148: G-27. Shortest Path DAG", "Video 149: G-28. Shortest Path Dijkstra", "Video 150: G-29. Word Ladder I"],
-          "other_subject": "CN (TUF+): Complete Revision + Practice Questions",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Cheapest Flights Within K Stops", "link": "https://leetcode.com/problems/cheapest-flights-within-k-stops/"},
-            {"difficulty": "Medium", "problem": "Network Delay Time", "link": "https://leetcode.com/problems/network-delay-time/"}
-          ],
-          "notes": ""
-        }
-      ]
+      "day": "D6",
+      "date": "15 Apr 2026 (Wed)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Practice : C++ Class", "duration": "5:35" },
+          { "title": "Template classes", "duration": "10:49" },
+          { "title": "Practice : Template Class", "duration": "10:17" },
+          { "title": "Online C and C++ compiler", "duration": "4:12" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 6: 32-bit vs 64-bit"
+      }
     },
     {
-      "week": 7,
-      "week_type": "Full Week (Monday - Sunday)",
-      "days": [
-        {
-          "day": 41,
-          "date": "2026-05-18",
-          "dsa_lectures": ["Video 151: G-30. Word Ladder II", "Video 152: G-31. Optimised Word Ladder", "Video 153: G-33. Dijkstra Part 1"],
-          "other_subject": "DP Start (Strivers): Video 182: DP 1. Introduction to DP",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Dijkstra (GFG)", "link": "https://www.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1"},
-            {"difficulty": "Medium", "problem": "Path with Minimum Effort", "link": "https://leetcode.com/problems/path-with-minimum-effort/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 42,
-          "date": "2026-05-19",
-          "dsa_lectures": ["Video 154: G-34. Dijkstra Part 2", "Video 155: G-35. Print Shortest Path", "Video 156: G-36. Shortest Distance Binary Maze"],
-          "other_subject": "DP: Video 183: DP 2. Climbing Stairs, Video 184: DP 3. Frog Jump",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Climbing Stairs", "link": "https://leetcode.com/problems/climbing-stairs/"},
-            {"difficulty": "Medium", "problem": "House Robber", "link": "https://leetcode.com/problems/house-robber/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 43,
-          "date": "2026-05-20",
-          "dsa_lectures": ["Video 157: G-37. Path Minimum Effort", "Video 158: G-38. Cheapest Flights K Stops", "Video 159: G-39. Minimum Multiplications"],
-          "other_subject": "DP: Video 185: DP 4. Frog Jump K Distance, Video 186: DP 5. Max Sum Non-Adjacent",
-          "questions": [
-            {"difficulty": "Easy", "problem": "House Robber II", "link": "https://leetcode.com/problems/house-robber-ii/"},
-            {"difficulty": "Medium", "problem": "Longest Increasing Subsequence", "link": "https://leetcode.com/problems/longest-increasing-subsequence/"}
-          ],
-          "notes": "Saturday - Weekend: 5 questions"
-        },
-        {
-          "day": 44,
-          "date": "2026-05-21",
-          "dsa_lectures": ["Video 160: G-40. Number of Ways to Arrive", "Video 161: G-41. Bellman Ford", "Video 162: G-42. Floyd Warshall"],
-          "other_subject": "DP: Video 187: DP 7. Ninja's Training, Video 188: DP 8. Grid Unique Paths",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Unique Paths", "link": "https://leetcode.com/problems/unique-paths/"},
-            {"difficulty": "Medium", "problem": "Unique Paths II", "link": "https://leetcode.com/problems/unique-paths-ii/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 45,
-          "date": "2026-05-22",
-          "dsa_lectures": ["Video 163: G-43. City with Smallest Neighbours", "Video 164: G-44. MST Theory", "Video 165: G-45. Prim's Algorithm"],
-          "other_subject": "DP: Video 189: DP 9. Unique Paths 2, Video 190: DP 10. Minimum Path Sum",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Min Cost Climbing Stairs", "link": "https://leetcode.com/problems/min-cost-climbing-stairs/"},
-            {"difficulty": "Medium", "problem": "Triangle", "link": "https://leetcode.com/problems/triangle/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 46,
-          "date": "2026-05-23",
-          "dsa_lectures": ["Video 166: G-46. Disjoint Set", "Video 167: G-48. Number of Provinces DSU", "Video 168: G-49. Operations to Connect Network"],
-          "other_subject": "DP: Video 191: DP 11. Triangle, Video 192: DP 12. Min/Max Falling Path Sum",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Number of Provinces", "link": "https://leetcode.com/problems/number-of-provinces/"},
-            {"difficulty": "Medium", "problem": "Longest Common Subsequence", "link": "https://leetcode.com/problems/longest-common-subsequence/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 47,
-          "date": "2026-05-24",
-          "dsa_lectures": ["Video 169: G-50. Accounts Merge", "Video 170: G-51. Number of Islands II", "Video 171: G-52. Making Large Island"],
-          "other_subject": "DP: Video 193: DP 13. Cherry Pickup, Video 194: DP 14. Subset Sum Equals K",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Subset Sum", "link": "https://www.geeksforgeeks.org/problems/subset-sum-problem-1613323252/1"},
-            {"difficulty": "Medium", "problem": "Partition Equal Subset Sum", "link": "https://leetcode.com/problems/partition-equal-subset-sum/"}
-          ],
-          "notes": ""
-        }
-      ]
+      "day": "D7",
+      "date": "16 Apr 2026 (Thu)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Setup CodeBlocks and Settings", "duration": "8:50" },
+          { "title": "Setup Dev-C++ and Settings", "duration": "5:50" },
+          { "title": "Debugging using Dev-C++", "duration": "7:19" },
+          { "title": "Debugging using CodeBlocks", "duration": "6:15" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 7: Storage Comparison"
+      }
     },
     {
-      "week": 8,
-      "week_type": "Full Week (Monday - Sunday)",
-      "days": [
-        {
-          "day": 48,
-          "date": "2026-05-25",
-          "dsa_lectures": ["Video 172: G-53. Most Stones Removed", "Video 173: G-54. Strongly Connected Components"],
-          "other_subject": "DP: Video 195: DP 15. Partition Equal Subset Sum, Video 196: DP 16. Partition with Min Difference",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Target Sum", "link": "https://leetcode.com/problems/target-sum/"},
-            {"difficulty": "Medium", "problem": "Coin Change", "link": "https://leetcode.com/problems/coin-change/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 49,
-          "date": "2026-05-26",
-          "dsa_lectures": ["Video 174: G-55. Bridges in Graph", "Video 175: G-56. Articulation Point"],
-          "other_subject": "DP: Video 197: DP 17. Count Subsets with Sum K, Video 198: DP 18. Count Partitions",
-          "questions": [
-            {"difficulty": "Easy", "problem": "0/1 Knapsack", "link": "https://www.geeksforgeeks.org/problems/0-1-knapsack-problem-1587115621/1"},
-            {"difficulty": "Medium", "problem": "Rod Cutting", "link": "https://www.geeksforgeeks.org/problems/rod-cutting-problem/1"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 50,
-          "date": "2026-05-27",
-          "dsa_lectures": ["Video 182: DP 1. Intro DP", "Video 183: DP 2. Climbing Stairs", "Video 184: DP 3. Frog Jump"],
-          "other_subject": "LinkedList (Strivers): Video 237: L1. Intro to LinkedList, Video 238: L2. Deletion & Insertion",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Reverse Linked List", "link": "https://leetcode.com/problems/reverse-linked-list/"},
-            {"difficulty": "Medium", "problem": "Merge Two Sorted Lists", "link": "https://leetcode.com/problems/merge-two-sorted-lists/"}
-          ],
-          "notes": "Sunday - Weekend: 5 questions"
-        },
-        {
-          "day": 51,
-          "date": "2026-05-28",
-          "dsa_lectures": ["Video 185: DP 4. Frog Jump K", "Video 186: DP 5. Max Sum Non-Adjacent", "Video 187: DP 7. Ninja Training"],
-          "other_subject": "LinkedList: Video 239: L3. Doubly LinkedList, Video 240: L4. Reverse DLL",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Remove Nth Node From End", "link": "https://leetcode.com/problems/remove-nth-node-from-end-of-list/"},
-            {"difficulty": "Medium", "problem": "Add Two Numbers", "link": "https://leetcode.com/problems/add-two-numbers/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 52,
-          "date": "2026-05-29",
-          "dsa_lectures": ["Video 188: DP 8. Grid Unique Paths", "Video 189: DP 9. Unique Paths 2", "Video 190: DP 10. Min Path Sum"],
-          "other_subject": "LinkedList: Video 241: L5. Add 2 Numbers in LL, Video 242: L6. Odd Even LinkedList",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Palindrome Linked List", "link": "https://leetcode.com/problems/palindrome-linked-list/"},
-            {"difficulty": "Medium", "problem": "LRU Cache", "link": "https://leetcode.com/problems/lru-cache/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 53,
-          "date": "2026-05-30",
-          "dsa_lectures": ["Video 191: DP 11. Triangle", "Video 192: DP 12. Min/Max Falling Path", "Video 193: DP 13. Cherry Pickup"],
-          "other_subject": "LinkedList: Video 243: L7. Sort 0s 1s 2s LL, Video 244: L8. Remove Nth from End",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Intersection of Two Linked Lists", "link": "https://leetcode.com/problems/intersection-of-two-linked-lists/"},
-            {"difficulty": "Medium", "problem": "Copy List with Random Pointer", "link": "https://leetcode.com/problems/copy-list-with-random-pointer/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 54,
-          "date": "2026-05-31",
-          "dsa_lectures": ["Video 194: DP 14. Subset Sum K", "Video 195: DP 15. Partition Equal Subset", "Video 196: DP 16. Min Difference Partition"],
-          "other_subject": "LinkedList: Video 245: L9. Reverse LL, Video 246: L10. Check Palindrome LL",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Middle of the Linked List", "link": "https://leetcode.com/problems/middle-of-the-linked-list/"},
-            {"difficulty": "Medium", "problem": "Detect Cycle in Linked List", "link": "https://leetcode.com/problems/linked-list-cycle/"}
-          ],
-          "notes": ""
-        }
-      ]
+      "day": "D8",
+      "date": "17 Apr 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Introduction", "duration": "13:28" },
+          { "title": "Stack vs Heap Memory", "duration": "8:59" },
+          { "title": "Stack vs Heap. Continued...", "duration": "13:07" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 8: Process Introduction"
+      }
     },
     {
-      "week": 9,
-      "week_type": "Final Week (Monday - Saturday)",
-      "days": [
-        {
-          "day": 55,
-          "date": "2026-06-01",
-          "dsa_lectures": ["Video 197: DP 17. Count Subsets Sum K", "Video 198: DP 18. Count Partitions Difference", "Video 199: DP 19. 0/1 Knapsack"],
-          "other_subject": "LinkedList: Video 247: L11. Add 1 to Number LL, Video 248: L12. Find Intersection Point",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Remove Duplicates from Sorted List", "link": "https://leetcode.com/problems/remove-duplicates-from-sorted-list/"},
-            {"difficulty": "Medium", "problem": "Rotate List", "link": "https://leetcode.com/problems/rotate-list/"}
-          ],
-          "notes": "Saturday - Weekend: 5 questions"
-        },
-        {
-          "day": 56,
-          "date": "2026-06-02",
-          "dsa_lectures": ["Video 200: DP 20. Min Coins", "Video 201: DP 21. Target Sum", "Video 202: DP 22. Coin Change 2"],
-          "other_subject": "Sliding Window: Video 272: L1. Intro Sliding Window, Video 273: L2. Max Points Cards",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Longest Substring Without Repeating Characters", "link": "https://leetcode.com/problems/longest-substring-without-repeating-characters/"},
-            {"difficulty": "Medium", "problem": "Longest Repeating Character Replacement", "link": "https://leetcode.com/problems/longest-repeating-character-replacement/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 57,
-          "date": "2026-06-03",
-          "dsa_lectures": ["Video 203: DP 23. Unbounded Knapsack", "Video 204: DP 24. Rod Cutting", "Video 205: DP 25. LCS"],
-          "other_subject": "Sliding Window: Video 274: L3. Longest Substring No Repeat, Video 275: L4. Max Consecutive Ones III",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Max Consecutive Ones III", "link": "https://leetcode.com/problems/max-consecutive-ones-iii/"},
-            {"difficulty": "Medium", "problem": "Longest Substring with At Most K Distinct", "link": "https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 58,
-          "date": "2026-06-04",
-          "dsa_lectures": ["Video 206: DP 26. Print LCS", "Video 207: DP 27. Longest Common Substring", "Video 208: DP 28. Longest Palindromic Subsequence"],
-          "other_subject": "Sliding Window + Greedy: Video 276: L5. Fruit Into Baskets, Video 277: L6. Longest K Distinct",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Longest Palindromic Substring", "link": "https://leetcode.com/problems/longest-palindromic-substring/"},
-            {"difficulty": "Medium", "problem": "Minimum Window Substring", "link": "https://leetcode.com/problems/minimum-window-substring/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 59,
-          "date": "2026-06-05",
-          "dsa_lectures": ["Video 209: DP 29. Edit Distance", "Video 210: DP 30. Min Insertions Palindrome", "Video 211: DP 31. Shortest Common Supersequence"],
-          "other_subject": "Greedy: Video 284: L1. Assign Cookies, Video 285: L3. Shortest Job First",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Jump Game", "link": "https://leetcode.com/problems/jump-game/"},
-            {"difficulty": "Medium", "problem": "Non-overlapping Intervals", "link": "https://leetcode.com/problems/non-overlapping-intervals/"}
-          ],
-          "notes": ""
-        },
-        {
-          "day": 60,
-          "date": "2026-06-06",
-          "dsa_lectures": ["Video 212: DP 32. Distinct Subsequences", "Video 213: DP 33. Edit Distance (final)", "Revision of weak topics + Last videos"],
-          "other_subject": "CN + OS + LLD + DBMS Full Revision",
-          "questions": [
-            {"difficulty": "Easy", "problem": "Review all previous", "link": "#"},
-            {"difficulty": "Medium", "problem": "Word Ladder (Google style)", "link": "https://leetcode.com/problems/word-ladder/"}
-          ],
-          "notes": "Sunday - Weekend: 5 questions. CONGRATULATIONS! 60 days complete. Google ready 🔥 Mock interviews start karo."
-        }
-      ]
+      "day": "D9",
+      "date": "18 Apr 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Physical vs Logical Data Structures", "duration": "7:16" },
+          { "title": "ADT", "duration": "14:30" },
+          { "title": "Time and Space Complexity", "duration": "18:19" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 9: Process States & Lifecycle"
+      }
+    },
+    {
+      "day": "D10",
+      "date": "19 Apr 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Time and Space Complexity from Code", "duration": "9:03" },
+          { "title": "How Recursion Works (Tracing)", "duration": "19:04" },
+          { "title": "Generalising Recursion", "duration": "2:07" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 10: Context Switching"
+      }
+    },
+    {
+      "day": "D11",
+      "date": "20 Apr 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "How Recursion uses Stack", "duration": "10:47" },
+          { "title": "Recurrence Relation - Time Complexity of Recursion", "duration": "11:07" },
+          { "title": "Lets Code Recursion", "duration": "11:33" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 11: FCFS & Convoy Effect"
+      }
+    },
+    {
+      "day": "D12",
+      "date": "21 Apr 2026 (Tue)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Static and Global Variables in Recursion", "duration": "8:29" },
+          { "title": "Let's Code Static and Global in Recursion", "duration": "7:01" },
+          { "title": "Tail Recursion", "duration": "7:21" },
+          { "title": "Head Recursion", "duration": "4:54" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 12: SJF & Priority Scheduling"
+      }
+    },
+    {
+      "day": "D13",
+      "date": "22 Apr 2026 (Wed)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Tree Recursion", "duration": "17:27" },
+          { "title": "Let's Code Tree Recursion", "duration": "5:36" },
+          { "title": "Indirect Recursion", "duration": "4:38" },
+          { "title": "Let's Code Indirect Recursion", "duration": "3:10" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 13: MLQ & MLFQ"
+      }
+    },
+    {
+      "day": "D14",
+      "date": "23 Apr 2026 (Thu)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Nested Recursion", "duration": "7:05" },
+          { "title": "Let's Code Nested Recursion", "duration": "2:29" },
+          { "title": "Sum of Natural Number using Recursion", "duration": "10:21" },
+          { "title": "Let's Code Sum of N using Recursion", "duration": "4:29" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 14: Critical Section & Race Condition"
+      }
+    },
+    {
+      "day": "D15",
+      "date": "24 Apr 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Factorial using Recursion", "duration": "4:40" },
+          { "title": "Let's Code Factorial using Recursion", "duration": "4:58" },
+          { "title": "Power using Recursion", "duration": "13:39" },
+          { "title": "Let's Code Power Recursion", "duration": "3:29" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 15: Conditional Variables & Semaphores"
+      }
+    },
+    {
+      "day": "D16",
+      "date": "25 Apr 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Taylor Series using Recursion", "duration": "14:18" },
+          { "title": "Let's Code Taylor Series using Recursion", "duration": "3:51" },
+          { "title": "Taylor Series using Horner's Rule", "duration": "10:58" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 16: Producer Consumer Problem"
+      }
+    },
+    {
+      "day": "D17",
+      "date": "26 Apr 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Let's Code Taylor Series Horner's Rule - Recursion", "duration": "2:09" },
+          { "title": "Let's Code Taylor Series Iterative", "duration": "2:02" },
+          { "title": "Fibonacci Series using Recursion - Memoization", "duration": "19:33" },
+          { "title": "Let's Code Fibonacci", "duration": "12:56" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 17: Deadlock Introduction"
+      }
+    },
+    {
+      "day": "D18",
+      "date": "27 Apr 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "nCr using Recursion", "duration": "9:24" },
+          { "title": "Let's Code nCr using Recursion", "duration": "4:50" },
+          { "title": "Tower of Hanoi Problem", "duration": "26:12" },
+          { "title": "Let's Code Tower of Hanoi", "duration": "3:38" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 18: Banker's Algorithm"
+      }
+    },
+    {
+      "day": "D19",
+      "date": "28 Apr 2026 (Tue)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Introduction to Array", "duration": "4:11" },
+          { "title": "Declarations of Array", "duration": "6:09" },
+          { "title": "Demo - Array Declaration", "duration": "4:54" },
+          { "title": "Static vs Dynamic Arrays", "duration": "8:47" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 19: Contiguous Memory Allocation"
+      }
+    },
+    {
+      "day": "D20",
+      "date": "29 Apr 2026 (Wed)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Demo - Static vs Dynamic Array", "duration": "4:41" },
+          { "title": "How to Increase Array Size", "duration": "5:09" },
+          { "title": "Demo - Increasing Array Size", "duration": "7:46" },
+          { "title": "2D Arrays", "duration": "10:37" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 20: Free Space Management"
+      }
+    },
+    {
+      "day": "D21",
+      "date": "30 Apr 2026 (Thu)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Demo - 2D Array", "duration": "6:46" },
+          { "title": "Array Representation by Compiler", "duration": "8:43" },
+          { "title": "Row Major Formula for 2D Arrays", "duration": "9:37" },
+          { "title": "Column Major Formula for 2D Arrays", "duration": "6:30" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 21: Paging"
+      }
+    },
+    {
+      "day": "D22",
+      "date": "01 May 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Formulas for nD Arrays", "duration": "11:10" },
+          { "title": "Formulas for 3D Arrays", "duration": "3:37" },
+          { "title": "Array ADT", "duration": "4:34" },
+          { "title": "Demo - Array ADT", "duration": "13:03" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 22: Virtual Memory & Page Fault"
+      }
+    },
+    {
+      "day": "D23",
+      "date": "02 May 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Inserting in an Array", "duration": "11:04" },
+          { "title": "Let's Code Insert", "duration": "6:49" },
+          { "title": "Deleting from Array", "duration": "6:28" },
+          { "title": "Let's Code Delete", "duration": "5:46" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 23: Page Replacement Algorithms"
+      }
+    },
+    {
+      "day": "D24",
+      "date": "03 May 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Linear Search", "duration": "11:31" },
+          { "title": "Improving Linear Search", "duration": "4:18" },
+          { "title": "Let's Code Linear Search", "duration": "6:26" },
+          { "title": "Binary Search", "duration": "9:58" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 24: Thrashing"
+      }
+    },
+    {
+      "day": "D25",
+      "date": "04 May 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Binary Search Algorithm", "duration": "7:07" },
+          { "title": "Let's Code Binary Search", "duration": "6:58" },
+          { "title": "Analysis of Binary Search", "duration": "12:46" },
+          { "title": "Average Case Analysis of Binary Search", "duration": "11:25" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 25: Full OS Revision"
+      }
+    },
+    {
+      "day": "D26",
+      "date": "05 May 2026 (Tue)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Get( ) Set( ) Avg( ) Max( ) functions on Array", "duration": "14:34" },
+          { "title": "Let's Code Get() Set() Max() on Array", "duration": "8:56" },
+          { "title": "Reverse and Shift an Array", "duration": "11:07" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 26 + LeetCode Contest"
+      }
+    },
+    {
+      "day": "D27",
+      "date": "06 May 2026 (Wed)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Lest's Code Reversing an Array", "duration": "5:37" },
+          { "title": "Check if Array is Sorted", "duration": "15:45" },
+          { "title": "Let's Code to check if Array is Sorted", "duration": "10:37" },
+          { "title": "Merging Arrays", "duration": "8:49" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 27 + 3 LC"
+      }
+    },
+    {
+      "day": "D28",
+      "date": "07 May 2026 (Thu)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Let's Code to Merge Arrays", "duration": "7:53" },
+          { "title": "Set operations on Array - Union, Intersection and Difference", "duration": "12:01" },
+          { "title": "Let's Code Set operations on Array", "duration": "9:23" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 28 + Practice"
+      }
+    },
+    {
+      "day": "D29",
+      "date": "08 May 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Let's Code a Menu Driver program for Arrays", "duration": "7:28" },
+          { "title": "Let's convert C program for Array to a C++", "duration": "15:42" },
+          { "title": "Let's Put all together in C++ program for Array", "duration": "16:48" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 29 + 3 LC"
+      }
+    },
+    {
+      "day": "D30",
+      "date": "09 May 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Student Challenge : Finding Single Missing Element in an Array", "duration": "10:59" },
+          { "title": "Student Challenge : Finding Multiple Missing Elements in an Array", "duration": "8:05" },
+          { "title": "Student Challenge : Finding Missing Element in an Array Method 2", "duration": "8:03" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 30 + Revision"
+      }
+    },
+    {
+      "day": "D31",
+      "date": "10 May 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Student Challenge Finding Duplicates in a Sorted Array", "duration": "12:53" },
+          { "title": "Student Challenge : Finding Duplicates in Sorted Array using Hashing", "duration": "7:29" },
+          { "title": "Student Challenge : Finding Duplicates in a Unsorted Array", "duration": "13:12" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 31 + 3 LC"
+      }
+    },
+    {
+      "day": "D32",
+      "date": "11 May 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Student Challenge : Finding a Pair of Elements with sum K", "duration": "13:03" },
+          { "title": "Student Challenge : Finding a Pair of Elements with sum K in Sorted Array", "duration": "7:35" },
+          { "title": "Student Challenge : Finding Max and Min in a single Scan", "duration": "9:01" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "OS + LeetCode",
+        "topics": "OS Lec 32 + Full OS Revision"
+      }
+    },
+    {
+      "day": "D33",
+      "date": "12 May 2026 (Tue)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Introduction to Strings", "duration": "21:24" },
+          { "title": "Finding Length of a String", "duration": "4:39" },
+          { "title": "Changing Case of a String", "duration": "8:03" },
+          { "title": "Counting Words and Vowels in a String", "duration": "8:55" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Introduction to LLD + SOLID Principles (SRP, OCP)"
+      }
+    },
+    {
+      "day": "D34",
+      "date": "13 May 2026 (Wed)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Validating a String", "duration": "6:02" },
+          { "title": "Reversing a String", "duration": "8:44" },
+          { "title": "Comparing Strings and Checking Palindrome", "duration": "11:02" },
+          { "title": "Finding Duplicates in a String", "duration": "12:54" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "LSP + ISP + DIP + UML Class Diagrams"
+      }
+    },
+    {
+      "day": "D35",
+      "date": "14 May 2026 (Thu)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Finding Duplicates in a String using Bitwise Operations", "duration": "25:09" },
+          { "title": "Checking if 2 Strings are Anagram (distinct letters)", "duration": "13:38" },
+          { "title": "Permutation of String", "duration": "31:31" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Creational Patterns (Singleton, Factory, Builder, Abstract Factory, Prototype)"
+      }
+    },
+    {
+      "day": "D36",
+      "date": "15 May 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Section Introduction", "duration": "0:59" },
+          { "title": "Diagonal Matrix", "duration": "8:40" },
+          { "title": "Let's Code Diagonal Matrix", "duration": "7:46" },
+          { "title": "C++ class for Diagonal Matrix", "duration": "13:42" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Structural Patterns (Adapter, Decorator, Facade, Composite, Proxy, Bridge, Flyweight)"
+      }
+    },
+    {
+      "day": "D37",
+      "date": "16 May 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Let's Code C++ class for Diagonal matrix", "duration": "7:03" },
+          { "title": "Lower Triangular Matrix Row-Major Mapping", "duration": "9:26" },
+          { "title": "Lower Triangular Matrix Column-Major Mapping", "duration": "6:37" },
+          { "title": "Let's Code Lower Triangular Matrix in C", "duration": "12:48" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Behavioural Patterns (Iterator, Observer, Strategy, Command, Template Method)"
+      }
+    },
+    {
+      "day": "D38",
+      "date": "17 May 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Let's Code Lower Triangular Matrix in C++", "duration": "9:45" },
+          { "title": "Upper Triangular Matrix Row-Major Mapping", "duration": "6:46" },
+          { "title": "Upper Triangular Matrix Column-Major Mapping", "duration": "3:21" },
+          { "title": "Symmetric Matrix", "duration": "2:32" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "State, Chain of Responsibility, Visitor, Mediator, Memento + Multithreading Basics"
+      }
+    },
+    {
+      "day": "D39",
+      "date": "18 May 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Tri-Diagonal and Tri-Band Matrix", "duration": "9:41" },
+          { "title": "Toeplitz Matrix", "duration": "7:15" },
+          { "title": "Menu Driven Program for Matrices", "duration": "14:57" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Thread Safety, Locks, Deadlock, Producer-Consumer + Dependency Injection"
+      }
+    },
+    {
+      "day": "D40",
+      "date": "19 May 2026 (Tue)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Sparse Matrix Representation", "duration": "8:46" },
+          { "title": "Addition of Sparse Matrices", "duration": "9:17" },
+          { "title": "Array Representation of Sparse Matrix", "duration": "11:21" },
+          { "title": "Let's Code to Create Sparse Matrix", "duration": "10:25" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Exception Handling, API Design, Database Integration + LLD Interview Approach"
+      }
+    },
+    {
+      "day": "D41",
+      "date": "20 May 2026 (Wed)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Program for Adding Sparse Matrix", "duration": "15:20" },
+          { "title": "Let's Code to Add Sparse Matrix", "duration": "13:32" },
+          { "title": "Let's Code Sparse Matrix using C++", "duration": "9:09" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Parking Lot (Design + Code) + Logging Framework (Design + Code)"
+      }
+    },
+    {
+      "day": "D42",
+      "date": "21 May 2026 (Thu)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Polynomial Representation", "duration": "10:25" },
+          { "title": "Polynomial Evaluation", "duration": "4:04" },
+          { "title": "Polynomial Addition", "duration": "8:58" },
+          { "title": "Let's Code Polynomial", "duration": "17:23" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Traffic Signal System + Vending Machine (Design + Code)"
+      }
+    },
+    {
+      "day": "D43",
+      "date": "22 May 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Why we need Dynamic Data Structure Linked List", "duration": "9:16" },
+          { "title": "About Linked List", "duration": "9:57" },
+          { "title": "Display Linked List + Let's Code", "duration": "16:00" },
+          { "title": "Recursive Display + Count + Sum", "duration": "17:37" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "LLD",
+        "topics": "Task Management System (Design + Code) + LLD Mock"
+      }
+    },
+    {
+      "day": "D44",
+      "date": "23 May 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Max Element + Searching in Linked List", "duration": "18:59" },
+          { "title": "Insert + Sorted Insert + Delete", "duration": "35:00" },
+          { "title": "Remove Duplicates + Check Sorted", "duration": "16:52" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "Introduction to DBMS + Data Models + ER Model"
+      }
+    },
+    {
+      "day": "D45",
+      "date": "24 May 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Reversing Linked List + Concatenate + Merge", "duration": "25:00" },
+          { "title": "Check LOOP + Circular Linked List (Display + Insert + Delete)", "duration": "32:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "Relational Model + Normalization + Functional Dependency"
+      }
+    },
+    {
+      "day": "D46",
+      "date": "25 May 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Doubly Linked List (All Operations) + Comparison Array vs LL", "duration": "35:00" },
+          { "title": "Student Challenges (Middle + Intersecting Point)", "duration": "19:18" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "SQL + Joins + Subqueries + Query Optimization"
+      }
+    },
+    {
+      "day": "D47",
+      "date": "26 May 2026 (Tue)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Introduction to Stack + Array Implementation + Let's Code", "duration": "38:00" },
+          { "title": "Stack using Linked List + C++ Class", "duration": "18:31" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "NoSQL + BASE + Graph DB + Sharding"
+      }
+    },
+    {
+      "day": "D48",
+      "date": "27 May 2026 (Wed)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Parenthesis Matching + Infix to Postfix (All Methods) + Let's Code", "duration": "45:00" },
+          { "title": "Postfix Evaluation + Let's Code", "duration": "15:08" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "Distributed DB + ACID + CAP + Concurrency Control"
+      }
+    },
+    {
+      "day": "D49",
+      "date": "28 May 2026 (Thu)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Queue ADT + Array + Circular Queue + Let's Code", "duration": "35:00" },
+          { "title": "Queue using LL + DEQUEUE + Priority Queue + 2 Stacks", "duration": "25:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "Transactions + Locking + Deadlock + Recovery"
+      }
+    },
+    {
+      "day": "D50",
+      "date": "29 May 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Binary Tree Terminology + Representation + Traversals (All 3 Methods)", "duration": "55:00" },
+          { "title": "Creating Binary Tree + Height & Count + Let's Code", "duration": "40:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "Indexing + B/B+ Trees + Performance Tuning + Caching"
+      }
+    },
+    {
+      "day": "D51",
+      "date": "30 May 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Binary Search Tree (Insert, Search, Delete) + Let's Code", "duration": "45:00" },
+          { "title": "Generating BST from Preorder + Drawbacks", "duration": "15:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "Security + Encryption + RBAC + Scalability + Big Data"
+      }
+    },
+    {
+      "day": "D52",
+      "date": "31 May 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "AVL Trees (Insert + Rotations + Deletion) + Let's Code", "duration": "55:00" },
+          { "title": "2-3 Trees + Red-Black Trees (Full Coverage)", "duration": "50:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "DBMS",
+        "topics": "Data Warehousing + Migration + Full DBMS Revision"
+      }
+    },
+    {
+      "day": "D53",
+      "date": "01 Jun 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Heap (Insert, Delete, Heapify) + Heap Sort + Let's Code", "duration": "45:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "CN",
+        "topics": "Introduction to CN + OSI & TCP/IP Model"
+      }
+    },
+    {
+      "day": "D54",
+      "date": "02 Jun 2026 (Tue)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Bubble + Insertion + Selection Sort + Analysis + Let's Code", "duration": "50:00" },
+          { "title": "Quick Sort + Merge Sort (Iterative + Recursive) + Let's Code", "duration": "45:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "CN",
+        "topics": "IP Addressing + Subnetting + NAT + DNS"
+      }
+    },
+    {
+      "day": "D55",
+      "date": "03 Jun 2026 (Wed)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Count + Radix + Shell + Bucket Sort + Let's Code", "duration": "55:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "CN",
+        "topics": "Routing Algorithms + BGP + OSPF + Switching + VLAN"
+      }
+    },
+    {
+      "day": "D56",
+      "date": "04 Jun 2026 (Thu)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Hashing (Chaining + Linear + Quadratic + Double) + Let's Code", "duration": "55:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "CN",
+        "topics": "Network Security (Firewall, VPN, TLS) + QoS + Troubleshooting"
+      }
+    },
+    {
+      "day": "D57",
+      "date": "05 Jun 2026 (Fri)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Graphs (Representation + BFS + DFS) + Let's Code", "duration": "45:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "CN",
+        "topics": "Advanced Concepts (SDN, Load Balancing, CDN) + Full CN Revision"
+      }
+    },
+    {
+      "day": "D58",
+      "date": "06 Jun 2026 (Sat)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Recurrence Relations + Master Theorem (All Cases) + Comparison of Functions", "duration": "60:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "Full Revision",
+        "topics": "LLD + DBMS Revision + 5 LC"
+      }
+    },
+    {
+      "day": "D59",
+      "date": "07 Jun 2026 (Sun)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Divide & Conquer + Greedy (Knapsack, MST, Dijkstra) + Let's Code", "duration": "65:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "Full Revision",
+        "topics": "DSA Advanced Topics Revision + Mock Interview"
+      }
+    },
+    {
+      "day": "D60",
+      "date": "08 Jun 2026 (Mon)",
+      "morning": {
+        "time": "☀ 6:00 – 9:00 AM",
+        "subject": "DSA — Abdul Bari",
+        "topics": [
+          { "title": "Dynamic Programming (Knapsack, LCS, Matrix Chain, Kadane) + Backtracking (N-Queens, Rat in Maze, Sudoku) + All Let's Code", "duration": "90:00" }
+        ]
+      },
+      "night": {
+        "time": "🌙 10:00 PM – 12:00 AM",
+        "subject": "FINAL REVISION",
+        "topics": "Full DSA + LLD + DBMS + CN Revision + Mock Interview + LeetCode Contest"
+      }
     }
-  ];
+  ]
+};
 
-        const timelineContainer = document.getElementById('timeline');
+        function App() {
+            const [selectedWeek, setSelectedWeek] = useState(0);
+            const [expandedDays, setExpandedDays] = useState(new Set());
 
-        scheduleData.forEach(weekData => {
-            // Create Week Header
-            const weekSection = document.createElement('div');
-            weekSection.className = 'week-section';
+            const weeks = useMemo(() => {
+                const result = [];
+                for (let i = 0; i < scheduleData.schedule.length; i += 7) {
+                    result.push(scheduleData.schedule.slice(i, i + 7));
+                }
+                return result;
+            }, []);
 
-            const weekHeader = document.createElement('div');
-            weekHeader.className = 'week-header';
-            weekHeader.innerHTML = `
-                <h2>Week ${weekData.week}</h2>
-                <span>${weekData.week_type}</span>
-            `;
-            weekSection.appendChild(weekHeader);
+            const toggleDay = (dayNum) => {
+                const newExpanded = new Set(expandedDays);
+                if (newExpanded.has(dayNum)) {
+                    newExpanded.delete(dayNum);
+                } else {
+                    newExpanded.add(dayNum);
+                }
+                setExpandedDays(newExpanded);
+            };
 
-            // Create Grid for Days in this Week
-            const gridContainer = document.createElement('div');
-            gridContainer.className = 'grid-container';
+            const getTodayDayNumber = () => {
+                const today = new Date('2026-04-09'); // Current date
+                const startDate = new Date('2026-04-10'); // D1 starts on Apr 10
+                const diffTime = today - startDate;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays + 1;
+            };
 
-            weekData.days.forEach(dayInfo => {
-                const lecturesHTML = dayInfo.dsa_lectures.map(lec => `<li>${lec}</li>`).join('');
-                
-                const questionsHTML = dayInfo.questions.map(q => `
-                    <li>
-                        <a href="${q.link}" target="_blank" class="problem-link">
-                            ${q.problem} 
-                            <span class="difficulty diff-${q.difficulty.toLowerCase()}">${q.difficulty}</span>
-                        </a>
-                    </li>
-                `).join('');
+            const todayDay = getTodayDayNumber();
+            const totalDays = scheduleData.schedule.length;
+            const completedDays = Math.max(0, todayDay - 1);
+            const progressPercentage = Math.round((completedDays / totalDays) * 100);
 
-                const notesHTML = dayInfo.notes ? `<div class="notes-section">${dayInfo.notes}</div>` : '';
-
-                const card = document.createElement('div');
-                card.className = 'day-card';
-                card.innerHTML = `
-                    <div class="day-header">
-                        <span class="day-number">Day ${dayInfo.day}</span>
-                        <span class="day-date">${dayInfo.date}</span>
-                    </div>
-                    
-                    <div class="section">
-                        <div class="section-title">Lectures</div>
-                        <ul>${lecturesHTML}</ul>
-                    </div>
-
-                    <div class="section">
-                        <div class="section-title">Core Subject</div>
-                        <ul><li>${dayInfo.other_subject}</li></ul>
+            return (
+                <div className="app-container">
+                    <div className="header">
+                        <div className="header-content">
+                            <h1>🚀 60-Day Study Marathon</h1>
+                            <div className="subtitle">DSA · OS · LLD · DBMS · CN</div>
+                        </div>
                     </div>
 
-                    <div class="section">
-                        <div class="section-title">Problems</div>
-                        <ul>${questionsHTML}</ul>
+                    <div className="progress-section">
+                        <div className="progress-card">
+                            <div className="progress-label">Total Days</div>
+                            <div className="progress-value">{totalDays}</div>
+                        </div>
+                        <div className="progress-card">
+                            <div className="progress-label">Completed</div>
+                            <div className="progress-value">{completedDays}</div>
+                        </div>
+                        <div className="progress-card">
+                            <div className="progress-label">Remaining</div>
+                            <div className="progress-value">{totalDays - completedDays}</div>
+                        </div>
+                        <div className="progress-card">
+                            <div className="progress-label">Progress</div>
+                            <div className="progress-value">{progressPercentage}%</div>
+                        </div>
                     </div>
-                    
-                    ${notesHTML}
-                `;
-                
-                gridContainer.appendChild(card);
-            });
 
-            weekSection.appendChild(gridContainer);
-            timelineContainer.appendChild(weekSection);
-        });
+                    <div className="week-nav">
+                        {weeks.map((week, idx) => (
+                            <button
+                                key={idx}
+                                className={`week-btn ${selectedWeek === idx ? 'active' : ''}`}
+                                onClick={() => setSelectedWeek(idx)}
+                            >
+                                Week {idx + 1}
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="days-grid">
+                        {weeks[selectedWeek]?.map((day, idx) => {
+                            const dayNum = parseInt(day.day.substring(1));
+                            const isToday = dayNum === todayDay;
+                            const isExpanded = expandedDays.has(dayNum);
+
+                            return (
+                                <div
+                                    key={dayNum}
+                                    className={`day-card ${isToday ? 'today' : ''}`}
+                                    onClick={() => toggleDay(dayNum)}
+                                >
+                                    <div className="day-header">
+                                        <div className="day-number">{day.day}</div>
+                                        <div className="day-date">{day.date}</div>
+                                    </div>
+
+                                    <div className="session morning">
+                                        <div className="session-header">
+                                            <span className="session-icon">☀️</span>
+                                            <span className="session-time">{day.morning.time}</span>
+                                        </div>
+                                        <div className="session-subject">{day.morning.subject}</div>
+                                        {isExpanded && Array.isArray(day.morning.topics) && (
+                                            <div className="topics-list">
+                                                {day.morning.topics.map((topic, i) => (
+                                                    <div key={i} className="topic-item">
+                                                        <span className="topic-title">{topic.title}</span>
+                                                        <span className="topic-duration">{topic.duration}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {!isExpanded && Array.isArray(day.morning.topics) && (
+                                            <div className="topics-text">
+                                                {day.morning.topics.length} topics
+                                            </div>
+                                        )}
+                                        {typeof day.morning.topics === 'string' && (
+                                            <div className="topics-text">{day.morning.topics}</div>
+                                        )}
+                                    </div>
+
+                                    <div className="session night">
+                                        <div className="session-header">
+                                            <span className="session-icon">🌙</span>
+                                            <span className="session-time">{day.night.time}</span>
+                                        </div>
+                                        <div className="session-subject">{day.night.subject}</div>
+                                        <div className="topics-text">{day.night.topics}</div>
+                                    </div>
+
+                                    {Array.isArray(day.morning.topics) && day.morning.topics.length > 0 && (
+                                        <button className="expand-btn" onClick={(e) => { e.stopPropagation(); toggleDay(dayNum); }}>
+                                            {isExpanded ? '▲ Show Less' : '▼ Show All Topics'}
+                                        </button>
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+
+                    <div className="footer">
+                        💪 Stay consistent. You got this! 🎯
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>
